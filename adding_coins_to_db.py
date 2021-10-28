@@ -38,9 +38,11 @@ address = json.loads(address)
 
 for ids in address:
     print("{:>3}. {}".format(cnt, ids["id"]))
-#     c.execute("INSERT OR IGNORE INTO coins(id, symbol, current_price, market_cap) VALUES (?, ?, ?, ?)",
-#               (ids["id"], ids["symbol"], ids["current_price"], ids["market_cap"],))
-    print(ids["platforms"])
+    c.execute("INSERT OR IGNORE INTO coins(address) VALUES (:address) SELECT * FROM coins WHERE id=:id", 
+    {'address': ids["platforms"].get("binance-smart-chain", ""),'id': ids["id"]})
+    print(ids["platforms"].get("binance-smart-chain", ""))
+    # print(ids["platforms"])
+
     cnt += 1
 
 conn.commit()

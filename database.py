@@ -9,6 +9,7 @@ c.execute(""" CREATE TABLE coins (
     symbol text,
     current_price integer,
     market_cap integer,
+    address text,
     Timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
 ) """)
 
