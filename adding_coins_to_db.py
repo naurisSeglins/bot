@@ -34,12 +34,12 @@ cnt, i = 1, 1
 address = requests.get(url_add).text
 address = json.loads(address)
 
-# print(address)
-
 for ids in address:
     print("{:>3}. {}".format(cnt, ids["id"]))
-    c.execute("INSERT OR IGNORE INTO coins(address) VALUES (:address) SELECT * FROM coins WHERE id=:id", 
-    {'address': ids["platforms"].get("binance-smart-chain", ""),'id': ids["id"]})
+    # address = ids["platforms"].get("binance-smart-chain", "")
+    # c.execute("INSERT OR INTO coins (address) SELECT :address WHERE (SELECT id FROM coins WHERE id = :id)",
+    # {'address': "aaaaaa",'id': "bitcoin"})
+    c.execute("UPDATE OR IGNORE coins SET address = :address WHERE id = :id", {'address': ids["platforms"].get("binance-smart-chain"),'id': ids["id"]})
     print(ids["platforms"].get("binance-smart-chain", ""))
     # print(ids["platforms"])
 
