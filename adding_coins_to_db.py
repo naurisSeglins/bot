@@ -1,7 +1,6 @@
 import sqlite3
 import requests
 import json
-import time 
 from datetime import datetime
 
 def do_some_work():
@@ -31,10 +30,10 @@ def do_some_work():
             break
 
         for ids in data:
-            # print("{:>3}. {}".format(cnt, ids["name"]))
-            c.execute("INSERT OR IGNORE INTO coins(id, symbol, current_price, market_cap) VALUES (?, ?, ?, ?)",
-                    (ids["id"], ids["symbol"], ids["current_price"], ids["market_cap"],))
-            # print(ids["id"])
+            current_time = datetime.now()
+            unix_time = datetime.timestamp(current_time)
+            c.execute("INSERT OR IGNORE INTO coins(id, symbol, current_price, market_cap, unix_time) VALUES (?, ?, ?, ?, ?)",
+                    (ids["id"], ids["symbol"], ids["current_price"], ids["market_cap"], unix_time,))
             cnt += 1
         i += 1
 
@@ -52,15 +51,10 @@ def do_some_work():
 
     for ids in address:
 
-        # print("{:>3}. {}".format(cnt, ids["id"]))
 
         c.execute("UPDATE OR IGNORE coins SET address = :address WHERE id = :id", {'address': ids["platforms"].get("binance-smart-chain"),'id': ids["id"]})
-        # print(ids["platforms"].get("binance-smart-chain", ""))
 
         cnt += 1
-
-    dateTimeObj = datetime.now()
-    print("finished address adding at: ", dateTimeObj)
 
     dateTimeObj = datetime.now()
     print("commiting at: ", dateTimeObj)
@@ -68,26 +62,3 @@ def do_some_work():
     conn.commit()
 
     conn.close()
-
-if __name__ == "__main__":
-
-    dateTimeObj = datetime.now()
-    print("first time at: ", dateTimeObj)
-
-    time.sleep(60)  # imagine you would like to start work in 1 minute first time
-    while True:
-
-        dateTimeObj = datetime.now()
-        print("doing the work at: ", dateTimeObj)
-
-        do_some_work()
-
-        dateTimeObj = datetime.now()
-        print("sleeping for 20 minutes at: ", dateTimeObj)
-
-        time.sleep(1200)  # do work every one hour
-
-        dateTimeObj = datetime.now()
-        print("slept for 20 minutes at: ", dateTimeObj)
-
-        

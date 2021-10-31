@@ -10,21 +10,18 @@ c.execute(""" CREATE TABLE coins (
     current_price integer,
     market_cap integer,
     address text,
-    Timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+    unix_time integer,
+    timestamp DATE DEFAULT (datetime('now','localtime'))
 ) """)
-
-# c.execute(""" CREATE TABLE coins (
+# c.execute(""" CREATE TABLE coins_test (
 #     id text PRIMARY KEY,
 #     symbol text,
 #     current_price integer,
-#     market_cap integer
+#     market_cap integer,
+#     address text,
+#     timestamp DATE DEFAULT (datetime('now','localtime'))
 # ) """)
 
-# c.execute("INSERT INTO employees VALUES ('Nauris', 'Seglins', 100)")
-
-# c.execute("SELECT * FROM employees WHERE last='Seglins'")
-
-# print(c.fetchall())
 
 conn.commit()
 
