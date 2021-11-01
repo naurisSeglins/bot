@@ -2,6 +2,7 @@ from datetime import datetime
 import time 
 
 from adding_coins_to_db import do_some_work
+from moving_new_coins import move_some_coins
 
 if __name__ == "__main__":
 
@@ -17,11 +18,16 @@ if __name__ == "__main__":
         do_some_work()
 
         dateTimeObj = datetime.now()
-        print("sleeping for 1 minutes at: ", dateTimeObj)
+        print("doing the work at: ", dateTimeObj)
 
-        time.sleep(600)  # do work every one hour
+        move_some_coins()
 
         dateTimeObj = datetime.now()
-        print("slept for 1 minutes at: ", dateTimeObj)
+        print("sleeping for 20 minutes at: ", dateTimeObj)
+
+        time.sleep(1200)  # do work every one hour
+
+        dateTimeObj = datetime.now()
+        print("slept for 20 minutes at: ", dateTimeObj)
 
         
