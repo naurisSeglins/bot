@@ -18,16 +18,16 @@ if __name__ == "__main__":
         do_some_work()
 
         dateTimeObj = datetime.now()
-        print("doing the work at: ", dateTimeObj)
+        print("moving some new coins at: ", dateTimeObj)
 
         move_some_coins()
 
         dateTimeObj = datetime.now()
-        print("sleeping for 20 minutes at: ", dateTimeObj)
+        print("sleeping for 10 minutes at: ", dateTimeObj)
 
-        time.sleep(1200)  # do work every one hour
+        time.sleep(600)  # do work every one hour
 
         dateTimeObj = datetime.now()
-        print("slept for 20 minutes at: ", dateTimeObj)
+        print("slept for 10 minutes at: ", dateTimeObj)
 
         
