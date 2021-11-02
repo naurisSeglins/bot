@@ -57,17 +57,18 @@ const init = async () => {
 };
 
 //timeris
-let timer = setInterval(function () {
-  var day = dateFormat(new Date(), "yyyy-mm-dd h:MM:ss");
-  console.log(`
-    Time
-    =================
-    date: ${day}
-  `);
-  buyToken();
-}, 5000); //seconds /1000
+// let timer = setInterval(function () {
+//   var day = dateFormat(new Date(), "yyyy-mm-dd h:MM:ss");
+//   console.log(`
+//     Time
+//     =================
+//     date: ${day}
+//   `);
+//   buyToken();
+// }, 5000); //seconds /1000
 
 buyToken();
+
 
 //galvenā funkcija
 async function buyToken() {
@@ -115,8 +116,10 @@ async function buyToken() {
       =================
       tokenIn: ${ethers.utils.formatEther(amountIn)} ${tokenIn} (WBNB)
       tokenOut: ${amountOutMin.toString()} ${tokenOut} (elonDoge)
+      amount in: ${amounts[1].div(1000000000)}
       date: ${day}
     `);
+  process.exit(1)
 
 
 // *************************** pirkšanas funkcija ************************************
@@ -149,4 +152,4 @@ async function buyToken() {
   // console.log(receipt);
 }
 
-init();
+// init();

@@ -1,5 +1,6 @@
 from datetime import datetime
 import time 
+import os
 
 from adding_coins_to_db import do_some_work
 from moving_new_coins import move_some_coins
@@ -21,6 +22,8 @@ if __name__ == "__main__":
         print("moving some new coins at: ", dateTimeObj)
 
         move_some_coins()
+
+        os.system('node buy_coins.js')
 
         dateTimeObj = datetime.now()
         print("sleeping for 10 minutes at: ", dateTimeObj)

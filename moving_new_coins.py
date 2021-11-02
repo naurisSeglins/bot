@@ -14,9 +14,6 @@ def move_some_coins():
     c.execute("DELETE FROM new_coins WHERE address IS NULL")
     c.execute("DELETE FROM new_coins WHERE unix_time < :unix_time",{'unix_time': unix_time})
 
-    print(unix_time)
-    print(current_time)
-
     conn.commit()
 
     conn.close()
