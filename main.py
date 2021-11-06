@@ -4,6 +4,8 @@ import os
 
 from adding_coins_to_db import do_some_work
 from moving_new_coins import move_some_coins
+from my_wallet import checking_wallet
+
 
 if __name__ == "__main__":
 
@@ -12,6 +14,8 @@ if __name__ == "__main__":
 
     time.sleep(6)  # imagine you would like to start work in 6 sec first time
     while True:
+
+        # checking_wallet()
 
         dateTimeObj = datetime.now()
         print("doing the work at: ", dateTimeObj)
@@ -22,6 +26,9 @@ if __name__ == "__main__":
         print("moving some new coins at: ", dateTimeObj)
 
         move_some_coins()
+
+        dateTimeObj = datetime.now()
+        print("buy some new coins at: ", dateTimeObj)
 
         os.system('node buy_coins.js')
 

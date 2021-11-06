@@ -8,7 +8,6 @@ def do_some_work():
 
     c = conn.cursor()
 
-
     url = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=eur&order=market_cap_desc&per_page=999&page={}&sparkline=false"
 
     url_add = "https://api.coingecko.com/api/v3/coins/list?include_platform=true"
@@ -52,7 +51,7 @@ def do_some_work():
     for ids in address:
 
 
-        c.execute("UPDATE OR IGNORE coins SET address = :address WHERE id = :id", {'address': ids["platforms"].get("binance-smart-chain"),'id': ids["id"]})
+        c.execute("UPDATE OR IGNORE coins SET address = :address WHERE id = :id", {'address': ids["platforms"].get("binance-smart-chain", ""),'id': ids["id"]})
 
         cnt += 1
 
