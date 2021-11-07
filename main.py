@@ -15,22 +15,22 @@ if __name__ == "__main__":
     time.sleep(6)  # imagine you would like to start work in 6 sec first time
     while True:
 
-        # checking_wallet()
+        checking_wallet()
 
-        dateTimeObj = datetime.now()
-        print("doing the work at: ", dateTimeObj)
+        # dateTimeObj = datetime.now()
+        # print("doing the work at: ", dateTimeObj)
 
-        do_some_work()
+        # do_some_work()
 
-        dateTimeObj = datetime.now()
-        print("moving some new coins at: ", dateTimeObj)
+        # dateTimeObj = datetime.now()
+        # print("moving some new coins at: ", dateTimeObj)
 
-        move_some_coins()
+        # move_some_coins()
 
-        dateTimeObj = datetime.now()
-        print("buy some new coins at: ", dateTimeObj)
+        # dateTimeObj = datetime.now()
+        # print("buy some new coins at: ", dateTimeObj)
 
-        os.system('node buy_coins.js')
+        # os.system('node buy_coins.js')
 
         dateTimeObj = datetime.now()
         print("sleeping for 10 minutes at: ", dateTimeObj)
