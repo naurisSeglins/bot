@@ -37,10 +37,6 @@ db.each(sql, [], (err, row) => {
     "wss://bsc-ws-node.nariox.org:443"
   );
 
-  // const provider = new ethers.providers.WebSocketProvider(
-  //   "wss://apis.ankr.com/wss/bd1074445ed243b0a8aaac808cfdcd4b/ca8790f7787df66e77aa9b7c5fffb3f7/binance/full/main"
-  // );
-
   const wallet = ethers.Wallet.fromMnemonic(mnemonic);
 
   const account = wallet.connect(provider);
@@ -122,35 +118,38 @@ db.each(sql, [], (err, row) => {
 
   // *************************** pirkšanas funkcija ************************************
     //<-- šeit adresi -->
-    // if (tokenOut == "0xf01830e8642a33e8cff5550d986d1031601c9f1a") {
-    //   var day = dateFormat(new Date(), "yyyy-mm-dd h:MM:ss");
-    //   console.log(`
-    //   The right token
-    //   =================
-    //   tokenOut: ${tokenOut}
-    //   date: ${day}
-    // `);
-    //   const tx = await router.swapExactTokensForTokens(
-    //     amountIn,
+    if (tokenOut == addresses.new_coin) {
+      var day = dateFormat(new Date(), "yyyy-mm-dd h:MM:ss");
+      console.log(`
+      The right token
+      =================
+      tokenOut: ${tokenOut}
+      date: ${day}
+    `);
+      const tx = await router.swapExactTokensForTokens(
+        amountIn,
 
-    //     amountOutMin,
+        amountOutMin,
 
-    //     [tokenIn, tokenOut],
+        [tokenIn, tokenOut],
 
-    //     addresses.recipient,
+        addresses.recipient,
 
-    //     Date.now() + 1000 * 60 * 10
-    //   );
-    //   clearInterval(timer);
-    // } else {
-    //   console.log("Waiting for the right token");
-    // }
-    // const receipt = await tx.wait();
-    // console.log("Transaction receipt");
-    // console.log(receipt);
+        Date.now() + 1000 * 60 * 10,
+
+        {gasLimit: 250000}
+
+      );
+      clearInterval(timer);
+    } else {
+      console.log("Waiting for the right token");
+    }
+    const receipt = await tx.wait();
+    console.log("Transaction receipt");
+    console.log(receipt);
   }
 
-  // init();
+  init();
 });
 
 db.close((err) => {

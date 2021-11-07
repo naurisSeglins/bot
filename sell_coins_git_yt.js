@@ -1,20 +1,22 @@
 const ethers = require('ethers');
-//This contains an Endpoint URL, and a wallet private key!!!
-const privatekey = "3f315ad2762ec83147f62390c1a0a1f41a7210ac35437340a83728b1baa12b73"
+const privatekey = "3abfee713b4d1d61608b6d2426129560879ea89298a05b8e46ae09a9613fbcfa"
 
+const WBNB = "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c"; 
+const BUSD = "0x9f28455a82baa6b4923a5e2d7624aaf574182585";
 
-//THIS WORK ON BSC TESTNET!!!!!
+const router = "0x10ED43C718714eb63d5aA57B78B54704E256024E";
 
-//All Values are for the testnet!!!!!!!!
+const recipient = "0xAeCb376d7484f29143c626a7Aa29C0CD7Ae39e59";
 
-const WBNB = "0xae13d989dac2f0debff460ac112a837c89baa7cd"; 
-const BUSD = "0x78867BbEeF44f2326bF8DDd1941a4439382EF2A7";
+const provider = new ethers.providers.WebSocketProvider("wss://bsc-ws-node.nariox.org:443");
 
-const router = "0x9Ac64Cc6e4415144C455BD8E4837Fea55603e5c3";
+const mnemonic = "exercise dumb famous kingdom auto sweet celery position mad angry pioneer record";
 
-const provider = new ethers.providers.JsonRpcProvider("wss://bsc-ws-node.nariox.org:443");
-const wallet = new ethers.Wallet(privatekey);
+// const wallet = new ethers.Wallet(privatekey);
+const wallet = new ethers.Wallet.fromMnemonic(mnemonic);
+
 const signer = wallet.connect(provider);
+
 
 const routerContract = new ethers.Contract(
     router,
@@ -25,8 +27,8 @@ const routerContract = new ethers.Contract(
     signer
 );
 
-const busdContract = new ethers.Contract(
-    BUSD,
+const wbnbContract = new ethers.Contract(
+    WBNB,
     [
         'function approve(address spender, uint256 amount) external returns (bool)'
     ],
@@ -35,25 +37,25 @@ const busdContract = new ethers.Contract(
 
 async function main() {
 
-    const BUSDamountIn = ethers.utils.parseUnits('100', 18);
-    let amounts = await routerContract.getAmountsOut(BUSDamountIn, [BUSD, WBNB]);
-    const WBNBamountOutMin = amounts[1].sub(amounts[1].div(10));
+    const WBNBamountIn = ethers.utils.parseUnits("0.005", "ether");
+    let amounts = await routerContract.getAmountsOut(WBNBamountIn, [WBNB, BUSD]);
+    const BUSDamountOutMin = amounts[1].sub(amounts[1].div(10));
 
-    console.log(ethers.utils.formatEther(BUSDamountIn));
-    console.log(ethers.utils.formatEther(WBNBamountOutMin));
+    console.log(ethers.utils.formatEther(WBNBamountIn));
+    console.log(ethers.utils.formatEther(BUSDamountOutMin));
 
-    const approveTx = await busdContract.approve(
+    const approveTx = await wbnbContract.approve(
         router,
-        BUSDamountIn
+        WBNBamountIn
     );
     let reciept = await approveTx.wait();
     console.log(reciept);
 
     const swapTx = await routerContract.swapExactTokensForTokens(
-        BUSDamountIn,
-        WBNBamountOutMin,
-        [BUSD, WBNB],
-        wallet.address,
+        WBNBamountIn,
+        BUSDamountOutMin,
+        [WBNB, BUSD],
+        recipient,
         Date.now() + 1000 * 60 * 10,
         {gasLimit: 250000}
     )
