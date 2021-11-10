@@ -27,12 +27,11 @@ db.each(sql, [], (err, row) => {
     //<-- šeit adresi -->
     factory: "0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73",
     router: "0x10ED43C718714eb63d5aA57B78B54704E256024E",
-
-    recipient: "0x73625badDA7Dfa52bDBf0340Ae688c2E89bB21E6",
+    recipient: "0xAeCb376d7484f29143c626a7Aa29C0CD7Ae39e59",
   };
 
   const mnemonic =
-    "summer ugly motor speed rail awake gate ripple arm ugly task siren";
+    "exercise dumb famous kingdom auto sweet celery position mad angry pioneer record";
 
   const provider = new ethers.providers.WebSocketProvider(
     "wss://bsc-ws-node.nariox.org:443"
@@ -42,6 +41,7 @@ db.each(sql, [], (err, row) => {
 
   const account = wallet.connect(provider);
 
+// ************************* CONTRACTS ***********************************
 
   const router = new ethers.Contract(
     addresses.router,
@@ -51,6 +51,8 @@ db.each(sql, [], (err, row) => {
     ],
     account
   );
+
+// ************************* LOGIC ***********************************
 
   //Approve some Wrapped BNB to be spent by the PancakeSwap router
 
@@ -70,6 +72,7 @@ db.each(sql, [], (err, row) => {
 
   buyToken();
 
+
   //galvenā funkcija
   async function buyToken() {
     var day = dateFormat(new Date(), "yyyy-mm-dd h:MM:ss");
@@ -77,28 +80,26 @@ db.each(sql, [], (err, row) => {
     console.log(`
       Token to buy and sell
       =================
-      tokenOut: ${addresses.WBNB}
-      tokenIn: ${addresses.new_coin}
+      tokenIn: ${addresses.WBNB}
+      tokenOut: ${addresses.new_coin}
       date: ${day}
     `);
 
     //WBNB
-    let tokenOut = "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c";
+    let tokenIn = "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c";
     // New coin
-    let tokenIn = row.coinAddress;
+    let tokenOut = addresses.new_coin;
 
-    if (tokenOut === addresses.WBNB) {
-      console.log("tokenOut === addresses.WBNB");
+    if (tokenIn === addresses.WBNB) {
     }
-    if (tokenIn === addresses.new_coin) {
-      console.log(`tokenIn: ${row.coinId}`);
+    if (tokenOut === addresses.new_coin) {
     }
     if (typeof tokenIn === "undefined") {
       console.log("something is wrong with tokeIn");
       return;
     }
 
-    const amountIn = ethers.utils.parseUnits("1000000", 18);
+    const amountIn = ethers.utils.parseUnits("0.005", "ether");
 
     const amounts = await router.getAmountsOut(amountIn, [tokenIn, tokenOut]);
 
@@ -106,45 +107,34 @@ db.each(sql, [], (err, row) => {
     var day = dateFormat(new Date(), "yyyy-mm-dd h:MM:ss");
 
     console.log(`
-        Gonna sell token
+        Gonna buy new token
         =================
-        tokenIn: ${ethers.utils.formatEther(amountIn)} ${tokenIn} 
-        tokenOut: ${ethers.utils.formatEther(amountOutMin)} ${row.coinId} (WBNB)
-        amount: ${amounts[1].toString()}
+        tokenIn: ${ethers.utils.formatEther(amountIn)} ${tokenIn} (WBNB)
+        tokenOut: ${ethers.utils.formatEther(amountOutMin)} ${row.coinId}
         date: ${day}
       `);
 
   // *************************** pirkšanas funkcija ************************************
-    //<-- šeit adresi -->
-    // if (tokenOut == "0xf01830e8642a33e8cff5550d986d1031601c9f1a") {
-    //   var day = dateFormat(new Date(), "yyyy-mm-dd h:MM:ss");
-    //   console.log(`
-    //   The right token
-    //   =================
-    //   tokenOut: ${tokenOut}
-    //   date: ${day}
-    // `);
-    //   const tx = await router.swapExactTokensForTokens(
-    //     amountIn,
+      const tx = await router.swapExactTokensForTokens(
+        amountIn,
 
-    //     amountOutMin,
+        amountOutMin,
 
-    //     [tokenIn, tokenOut],
+        [tokenIn, tokenOut],
 
-    //     addresses.recipient,
+        addresses.recipient,
 
-    //     Date.now() + 1000 * 60 * 10
-    //   );
-    //   clearInterval(timer);
-    // } else {
-    //   console.log("Waiting for the right token");
-    // }
-    // const receipt = await tx.wait();
-    // console.log("Transaction receipt");
-    // console.log(receipt);
+        Date.now() + 1000 * 60 * 10,
+
+        {gasLimit: 250000}
+
+      );
+    const receipt = await tx.wait();
+    console.log("Transaction receipt");
+    console.log(receipt);
   }
 
-  // init();
+  init();
 });
 
 db.close((err) => {

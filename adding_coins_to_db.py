@@ -14,9 +14,6 @@ def do_some_work():
 
     cnt, i = 1, 1
 
-    dateTimeObj = datetime.now()
-    print("started coin adding at: ", dateTimeObj)
-
     while True:
         try:
             data = requests.get(url.format(i)).text
@@ -36,10 +33,6 @@ def do_some_work():
             cnt += 1
         i += 1
 
-    dateTimeObj = datetime.now()
-    print("finished coin adding at: ", dateTimeObj)
-
-
 
     address = requests.get(url_add).text
     address = json.loads(address)
@@ -54,9 +47,6 @@ def do_some_work():
         c.execute("UPDATE OR IGNORE coins SET address = :address WHERE id = :id", {'address': ids["platforms"].get("binance-smart-chain", ""),'id': ids["id"]})
 
         cnt += 1
-
-    dateTimeObj = datetime.now()
-    print("commiting at: ", dateTimeObj)
 
     conn.commit()
 
