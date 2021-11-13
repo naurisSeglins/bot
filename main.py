@@ -24,27 +24,32 @@ if __name__ == "__main__":
         print("moving some new coins at: ", dateTimeObj)
 
         move_some_coins()
+        
+        dateTimeObj = datetime.now()
+        print("moving new coins to wallet at: ", dateTimeObj)
 
         checking_wallet()
+
+        dateTimeObj = datetime.now()
+        print("checking prices in wallet at: ", dateTimeObj)
 
         os.system('node wallet_coin_price.js')
 
         os.system('node disconnect_to_db.js')
 
-
         # dateTimeObj = datetime.now()
-        # print("buy some new coins at: ", dateTimeObj)
+        # print("buying new coins at: ", dateTimeObj)
 
         # os.system('node buy_coins.js')
         # os.system('node sell_coins_git_yt.js')
 
 
         dateTimeObj = datetime.now()
-        print("sleeping for 10 minutes at: ", dateTimeObj)
+        print("sleeping for 5 minutes at: ", dateTimeObj)
 
-        time.sleep(600)  # do work every one hour
+        time.sleep(300)  # do work every one hour
 
         dateTimeObj = datetime.now()
-        print("slept for 10 minutes at: ", dateTimeObj)
+        print("slept for 5 minutes at: ", dateTimeObj)
 
         

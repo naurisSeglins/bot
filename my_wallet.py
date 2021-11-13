@@ -28,7 +28,7 @@ def checking_wallet():
 
 
     current_time = datetime.now()
-    unix_time = datetime.timestamp(current_time) - 1200
+    unix_time = datetime.timestamp(current_time) - 200
     # c.execute("DELETE FROM wallet WHERE address IS NULL OR address = ''")
     c.execute("DELETE FROM wallet WHERE unix_time < :unix_time AND amount = 0",{'unix_time': unix_time})
 

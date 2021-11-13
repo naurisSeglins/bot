@@ -12,41 +12,55 @@ def do_some_work():
 
     url_add = "https://api.coingecko.com/api/v3/coins/list?include_platform=true"
 
-    cnt, i = 1, 1
+    i = 1
 
     while True:
         try:
             data = requests.get(url.format(i)).text
             data = json.loads(data)
         except:
-            print("Error!")
+            print("Error at data url!")
+            print(data)
             break
 
         if not data:
             break
 
         for ids in data:
-            current_time = datetime.now()
-            unix_time = datetime.timestamp(current_time)
-            c.execute("INSERT OR IGNORE INTO coins(id, symbol, current_price, market_cap, unix_time) VALUES (?, ?, ?, ?, ?)",
-                    (ids["id"], ids["symbol"], ids["current_price"], ids["market_cap"], unix_time,))
-            cnt += 1
+            try:
+                current_time = datetime.now()
+                unix_time = datetime.timestamp(current_time)
+                c.execute("INSERT OR IGNORE INTO coins(id, symbol, unix_time) VALUES (?, ?, ?)",
+                        (ids["id"], ids["symbol"], unix_time,))                
+            except:
+                print("Error at inserting coins!")
+                print(ids)
+                break
+
         i += 1
 
+    try:
+        address = requests.get(url_add).text
+    except:
+        print("error at first address!")
 
-    address = requests.get(url_add).text
-    address = json.loads(address)
+    try:
+        address = json.loads(address)
+    except:
+        print("error at second address!")
+        print(address)
 
-    dateTimeObj = datetime.now()
-    print("started address adding at: ", dateTimeObj)
-
+    try:
+        dateTimeObj = datetime.now()
+        print("started address adding at: ", dateTimeObj)
+    except:
+        print("error at address time!")
 
     for ids in address:
-
-
-        c.execute("UPDATE OR IGNORE coins SET address = :address WHERE id = :id", {'address': ids["platforms"].get("binance-smart-chain", ""),'id': ids["id"]})
-
-        cnt += 1
+        try:
+            c.execute("UPDATE OR IGNORE coins SET address = :address WHERE id = :id", {'address': ids["platforms"].get("binance-smart-chain"),'id': ids["id"]})
+        except:
+            print("error at address update loop")
 
     conn.commit()
 

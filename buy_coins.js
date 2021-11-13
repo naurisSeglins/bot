@@ -20,7 +20,6 @@ db.each(sql, [], (err, row) => {
   ${row.coinId} - ${row.coinAddress}`);
   const ethers = require("ethers");
   var dateFormat = require("dateformat");
-  // const privatekey = "3abfee713b4d1d61608b6d2426129560879ea89298a05b8e46ae09a9613fbcfa"
   
   const WBNB = "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c"; 
   const BUSD = row.coinAddress;
@@ -58,34 +57,36 @@ db.each(sql, [], (err, row) => {
   
   async function main() {
   
-      const WBNBamountIn = ethers.utils.parseUnits("0.005", "ether");
-      let amounts = await routerContract.getAmountsOut(WBNBamountIn, [WBNB, BUSD]);
-      const BUSDamountOutMin = amounts[1].sub(amounts[1].div(10));
-  
-      console.log(ethers.utils.formatEther(WBNBamountIn));
-      console.log(ethers.utils.formatEther(BUSDamountOutMin));
-  
-      // const approveTx = await wbnbContract.approve(
-      //     router,
-      //     WBNBamountIn
-      // );
-      // let reciept = await approveTx.wait();
-      // console.log(reciept);
-  
-      // const swapTx = await routerContract.swapExactTokensForTokens(
-      //     WBNBamountIn,
-      //     BUSDamountOutMin,
-      //     [WBNB, BUSD],
-      //     recipient,
-      //     Date.now() + 1000 * 60 * 10,
-      //     {gasLimit: 250000}
-      // )
-  
-      // receipt = await swapTx.wait();
-      // console.log(receipt);
+    console.log("main buy function is called");
+    const WBNBamountIn = ethers.utils.parseUnits("0.005", "ether");
+    let amounts = await routerContract.getAmountsOut(WBNBamountIn, [WBNB, BUSD]);
+    const BUSDamountOutMin = amounts[1].sub(amounts[1].div(10));
+
+    console.log(ethers.utils.formatEther(WBNBamountIn));
+    console.log(ethers.utils.formatEther(BUSDamountOutMin));
+
+    const approveTx = await wbnbContract.approve(
+        router,
+        WBNBamountIn
+    );
+    let reciept = await approveTx.wait();
+    console.log(reciept);
+
+    const swapTx = await routerContract.swapExactTokensForTokens(
+        WBNBamountIn,
+        BUSDamountOutMin,
+        [WBNB, BUSD],
+        recipient,
+        Date.now() + 1000 * 60 * 10,
+        {gasLimit: 350000}
+    )
+
+    receipt = await swapTx.wait();
+    console.log(receipt);
   }
   
-  main().then().finally(() => {});
+  // main().then().finally(() => {});
+  main();
 });
 db.close((err) => {
   if (err) {

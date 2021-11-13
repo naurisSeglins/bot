@@ -5,7 +5,7 @@ let db = new sqlite3.Database('/home/nauris/Documents/GitHub/bot/coins.db', sqli
   if (err) {
     console.error(err.message);
   }
-  console.log('Connected to the coins database.');
+  // console.log('Connected to the coins database.');
 });
 
 let sql = `SELECT amount coinAmount,
@@ -16,8 +16,8 @@ db.each(sql, [], (err, row) => {
   if (err) {
     throw err;
   }
-  console.log(`
-  ${row.coinAmount} - ${row.coinAddress}`);
+  // console.log(`
+  // ${row.coinAmount} - ${row.coinAddress}`);
 
   const ethers = require("ethers");
   var dateFormat = require("dateformat");
@@ -51,8 +51,8 @@ db.each(sql, [], (err, row) => {
       let amounts = await routerContract.getAmountsOut(WBNBamountIn, [WBNB, BUSD]);
       const BUSDamountOutMin = amounts[1].sub(amounts[1].div(10));
   
-      console.log(ethers.utils.formatEther(WBNBamountIn));
-      console.log(ethers.utils.formatEther(BUSDamountOutMin));
+      // console.log(ethers.utils.formatEther(WBNBamountIn));
+      // console.log(ethers.utils.formatEther(BUSDamountOutMin));
       price = ethers.utils.formatEther(BUSDamountOutMin)
       let sql_price = `UPDATE wallet
       SET bnb_price = ${price}
