@@ -28,7 +28,8 @@ db.each(sql, [], (err, row) => {
   
   const recipient = "0xAeCb376d7484f29143c626a7Aa29C0CD7Ae39e59";
   
-  const provider = new ethers.providers.WebSocketProvider("wss://bsc-ws-node.nariox.org:443");
+  // const provider = new ethers.providers.WebSocketProvider("wss://bsc-ws-node.nariox.org:443");
+  const provider = new ethers.providers.JsonRpcProvider("https://bsc.getblock.io/mainnet/?api_key=1086c980-0118-4f0e-85dd-67f7172336dd");
   
   const mnemonic = "exercise dumb famous kingdom auto sweet celery position mad angry pioneer record";
   

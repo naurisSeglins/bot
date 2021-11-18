@@ -35,8 +35,6 @@ if __name__ == "__main__":
 
         os.system('node wallet_coin_price.js')
 
-        os.system('node disconnect_to_db.js')
-
         # dateTimeObj = datetime.now()
         # print("buying new coins at: ", dateTimeObj)
 
