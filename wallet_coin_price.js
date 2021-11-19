@@ -1,5 +1,4 @@
 const sqlite3 = require('sqlite3').verbose();
-console.log("connecting to database")
 
 // open the database
 let db = new sqlite3.Database('/home/nauris/Documents/GitHub/bot/coins.db', sqlite3.OPEN_READWRITE, (err) => {
@@ -55,10 +54,10 @@ db.each(sql, [], (err, row) => {
       const WBNBamountIn = ethers.utils.parseUnits(`${row.coinAmount}`, "ether");
       let amounts = await routerContract.getAmountsOut(WBNBamountIn, [WBNB, BUSD]);
       const BUSDamountOutMin = amounts[1].sub(amounts[1].div(10));
-      console.log("waiting prices")
   
-      console.log(ethers.utils.formatEther(WBNBamountIn));
-      console.log(ethers.utils.formatEther(BUSDamountOutMin));
+      // console.log(ethers.utils.formatEther(WBNBamountIn));
+      // console.log(ethers.utils.formatEther(BUSDamountOutMin));
+
       price = ethers.utils.formatEther(BUSDamountOutMin)
       let sql_price = `UPDATE wallet
       SET bnb_price = ${price}
@@ -79,7 +78,6 @@ function close_script(){
     }
     console.log('Close the database connection.');
   });
-  console.log("exiting")
   process.exit()
 }
 

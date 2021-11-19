@@ -2,6 +2,7 @@ import sqlite3
 import requests
 import json
 from datetime import datetime
+import time 
 
 def do_some_work():
     conn = sqlite3.connect("coins.db")
@@ -43,6 +44,8 @@ def do_some_work():
         address = requests.get(url_add).text
     except:
         print("error at first address!")
+    
+    time.sleep(5)  # do work every one hour
 
     try:
         address = json.loads(address)

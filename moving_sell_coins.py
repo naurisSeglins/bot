@@ -7,9 +7,11 @@ from decimal import Decimal
 def checking_wallet():
     conn = sqlite3.connect("coins.db")
 
-    c = conn.cursor() 
+    c = conn.cursor()
 
-    c.execute("INSERT OR IGNORE INTO wallet(id, address, unix_time, timestamp) SELECT id, address, unix_time, timestamp FROM new_coins")
+    c.execute("DELETE FROM wallet WHERE unix_time < :unix_time AND amount = 0",{'unix_time': unix_time})
+
+    c.execute("INSERT OR IGNORE INTO sell_coins(id, address, unix_time, timestamp) SELECT id, address, unix_time, timestamp FROM new_coins")
 
     c.execute("SELECT address FROM wallet")
 

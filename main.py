@@ -11,22 +11,28 @@ if __name__ == "__main__":
 
     dateTimeObj = datetime.now()
     print("first time at: ", dateTimeObj)
+    cycle = 1
 
     time.sleep(6)  # imagine you would like to start work in 6 sec first time
     while True:
+        cycleStart = datetime.now()
 
-        dateTimeObj = datetime.now()
-        print("doing the work at: ", dateTimeObj)
+        print("Cycle nr.",cycle)
 
-        do_some_work()
+        if cycle == 10:
 
-        dateTimeObj = datetime.now()
-        print("moving some new coins at: ", dateTimeObj)
+            print("doing the work at: ", cycleStart)
 
-        move_some_coins()
+            do_some_work()
+
+            dateTimeObj = datetime.now()
+            print("moving some new coins at: ", dateTimeObj)
+
+            move_some_coins()
+            print("reseting cycle")
+            cycle = 0
         
-        dateTimeObj = datetime.now()
-        print("moving new coins to wallet at: ", dateTimeObj)
+        print("moving new coins to wallet at: ", cycleStart)
 
         checking_wallet()
 
@@ -41,13 +47,22 @@ if __name__ == "__main__":
         # os.system('node buy_coins.js')
         # os.system('node sell_coins_git_yt.js')
 
+        cycleEnd = datetime.now()
+
+        cycleTime = cycleEnd - cycleStart
+        print("cycle time =", cycleTime)
+
+        print("sleeping for 50 seconds at: ", cycleEnd)
+
+        time.sleep(50)  # do work every one hour
+
+        cycle +=1
 
         dateTimeObj = datetime.now()
-        print("sleeping for 5 minutes at: ", dateTimeObj)
+        print("slept for 50 seconds at: ", dateTimeObj)
+        # space between cycles
+        print(" ")
+        print(" ")
 
-        time.sleep(300)  # do work every one hour
-
-        dateTimeObj = datetime.now()
-        print("slept for 5 minutes at: ", dateTimeObj)
 
         

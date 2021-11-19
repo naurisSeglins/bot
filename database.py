@@ -7,7 +7,7 @@ conn = sqlite3.connect("coins.db")
 
 c = conn.cursor()
 
-# c.execute(""" CREATE TABLE wallet (
+# c.execute(""" CREATE TABLE sell_coins (
 #     id text PRIMARY KEY,
 #     address text,
 #     unix_time integer,
