@@ -21,7 +21,6 @@ def do_some_work():
             data = json.loads(data)
         except:
             print("Error at data url!")
-            print(data)
             break
 
         if not data:
@@ -39,31 +38,31 @@ def do_some_work():
                 break
 
         i += 1
-
-    try:
-        address = requests.get(url_add).text
-    except:
-        print("error at first address!")
-    
     time.sleep(5)  # do work every one hour
+    index_ok = 0
+    while index_ok == 0:
 
-    try:
-        address = json.loads(address)
-    except:
-        print("error at second address!")
-        print(address)
-
-    try:
-        dateTimeObj = datetime.now()
-        print("started address adding at: ", dateTimeObj)
-    except:
-        print("error at address time!")
-
-    for ids in address:
         try:
-            c.execute("UPDATE OR IGNORE coins SET address = :address WHERE id = :id", {'address': ids["platforms"].get("binance-smart-chain"),'id': ids["id"]})
+            address = requests.get(url_add).text
+            time.sleep(5)  # do work every one hour
+            address = json.loads(address)
+            index_ok = 1
         except:
-            print("error at address update loop")
+            print("error at first address!")
+            print("error at second address!")
+        time.sleep(5)  # do work every one hour
+
+
+    dateTimeObj = datetime.now()
+    print("started address adding at: ", dateTimeObj)
+    try:
+        for ids in address:
+            try:
+                c.execute("UPDATE OR IGNORE coins SET address = :address WHERE id = :id", {'address': ids["platforms"].get("binance-smart-chain"),'id': ids["id"]})
+            except:
+                print("error at address update loop")
+    except:
+        print("error at address adding")
 
     conn.commit()
 
