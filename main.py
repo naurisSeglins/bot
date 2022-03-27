@@ -5,13 +5,14 @@ import os
 from adding_coins_to_db import do_some_work
 from moving_new_coins import move_some_coins
 from my_wallet import checking_wallet
+from coin_watcher import add_coin_watcher
 
 
 if __name__ == "__main__":
 
     dateTimeObj = datetime.now()
     print("first time at: ", dateTimeObj)
-    cycle = 1
+    cycle = 9
 
     time.sleep(6)  # imagine you would like to start work in 6 sec first time
     while True:
@@ -29,6 +30,12 @@ if __name__ == "__main__":
             print("moving some new coins at: ", dateTimeObj)
 
             move_some_coins()
+
+            dateTimeObj = datetime.now()
+            print("moving coins to watcher at: ", dateTimeObj)
+
+            add_coin_watcher()
+
             print("reseting cycle")
             cycle = 0
         

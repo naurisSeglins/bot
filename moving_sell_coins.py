@@ -9,6 +9,9 @@ def checking_wallet():
 
     c = conn.cursor()
 
+    current_time = datetime.now()
+    unix_time = datetime.timestamp(current_time) - 600
+
     c.execute("DELETE FROM wallet WHERE unix_time < :unix_time AND amount = 0",{'unix_time': unix_time})
 
     c.execute("INSERT OR IGNORE INTO sell_coins(id, address, unix_time, timestamp) SELECT id, address, unix_time, timestamp FROM new_coins")

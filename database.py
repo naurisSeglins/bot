@@ -7,11 +7,10 @@ conn = sqlite3.connect("coins.db")
 
 c = conn.cursor()
 
-# c.execute(""" CREATE TABLE sell_coins (
+# c.execute(""" CREATE TABLE coin_watcher (
 #     id text PRIMARY KEY,
 #     address text,
 #     unix_time integer,
-#     amount integer,
 #     bnb_price integer,
 #     timestamp DATE DEFAULT (datetime('now','localtime'))
 # ) """)
