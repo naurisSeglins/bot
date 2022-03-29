@@ -8,21 +8,17 @@ conn = sqlite3.connect("coins.db")
 c = conn.cursor()
 
 # c.execute(""" CREATE TABLE coin_watcher (
-#     id text PRIMARY KEY,
-#     address text,
-#     unix_time integer,
-#     bnb_price integer,
-#     timestamp DATE DEFAULT (datetime('now','localtime'))
+#     Nr INTEGER PRIMARY KEY AUTOINCREMENT
 # ) """)
 
 
-# c.execute(""" CREATE TABLE new_coins (
-#     id text PRIMARY KEY,
-#     symbol text,
-#     address text,
-#     unix_time integer,
-#     timestamp DATE DEFAULT (datetime('now','localtime'))
-# ) """)
+c.execute(""" CREATE TABLE coins_on_scanner (
+    id text PRIMARY KEY,
+    symbol text,
+    address text,
+    unix_time integer,
+    timestamp DATE DEFAULT (datetime('now','localtime'))
+) """)
 
 
 conn.commit()
