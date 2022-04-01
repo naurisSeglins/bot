@@ -9,26 +9,10 @@ def add_coin_watcher():
 
     c = conn.cursor() 
 
-    c.execute("SELECT id FROM new_coins")
+    current_time = datetime.now()
+    unix_time = datetime.timestamp(current_time)    
 
-    rows = c.fetchall()
-    print(rows)
-
-    for row in rows:
-
-        i = 0
-        coin_id = str(row[i]).replace("-", "_")
-        sql_query = ("ALTER TABLE coin_watcher ADD unix_time_" + coin_id + " integer")
-        
-        c.execute(sql_query)
-
-        sql_query = ("ALTER TABLE coin_watcher ADD " + coin_id + " text")
-        
-        c.execute(sql_query)
-
-        i += 1
-
-    c.execute("INSERT INTO coins_on_scanner SELECT * FROM new_coins")
+    c.execute("INSERT INTO coin_watcher(unix_time) VALUES(:unix_time)",{'unix_time': unix_time})
 
 
     conn.commit()

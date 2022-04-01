@@ -31,17 +31,22 @@ if __name__ == "__main__":
 
             move_some_coins()
 
-            dateTimeObj = datetime.now()
-            print("moving coins to watcher at: ", dateTimeObj)
-
-            add_coin_watcher()
-
             print("reseting cycle")
             cycle = 0
         
-        print("moving new coins to wallet at: ", cycleStart)
+        print("checking wallet how many coins at: ", cycleStart)
 
         checking_wallet()
+
+        dateTimeObj = datetime.now()
+        print("inserting rows to watcher at: ", dateTimeObj)
+
+        add_coin_watcher()
+
+        dateTimeObj = datetime.now()
+        print("inserting new prices in coin watcher: ", dateTimeObj)
+
+        os.system('node new_coin_price.js')
 
         dateTimeObj = datetime.now()
         print("checking prices in wallet at: ", dateTimeObj)
@@ -59,9 +64,9 @@ if __name__ == "__main__":
         cycleTime = cycleEnd - cycleStart
         print("cycle time =", cycleTime)
 
-        print("sleeping for 50 seconds at: ", cycleEnd)
+        print("sleeping for 45 seconds at: ", cycleEnd)
 
-        time.sleep(50)  # do work every one hour
+        time.sleep(45)  # do work every one hour
 
         cycle +=1
 
