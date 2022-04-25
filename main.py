@@ -48,10 +48,10 @@ if __name__ == "__main__":
 
         os.system('node new_coin_price.js')
 
-        dateTimeObj = datetime.now()
-        print("checking prices in wallet at: ", dateTimeObj)
+        # dateTimeObj = datetime.now()
+        # print("checking prices in wallet at: ", dateTimeObj)
 
-        os.system('node wallet_coin_price.js')
+        # os.system('node wallet_coin_price.js')
 
         # dateTimeObj = datetime.now()
         # print("buying new coins at: ", dateTimeObj)

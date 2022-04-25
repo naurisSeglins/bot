@@ -53,15 +53,18 @@ db.each(sql, [], (err, row) => {
   );
 
   async function check_price() {
-  
-    // 1 coin
+    try{
+      // 1 coin
       const CoinamountIn = ethers.utils.parseUnits("1", "ether");
       // 1  coin is worth how much BUSD ?
       let amounts = await routerContract.getAmountsOut(CoinamountIn, [WBNB, BUSD], {
-        gasLimit: 350000
+        // gas: 2100000,
+        // gasPrice: 8000000000,
+        // gasLimit: 950000
       });
+
       const BUSDAmountOutMin = amounts[1];
-  
+
       console.log(ethers.utils.formatEther(CoinamountIn));
       console.log(ethers.utils.formatEther(BUSDAmountOutMin));
 
@@ -81,6 +84,15 @@ db.each(sql, [], (err, row) => {
       let sql_price = `UPDATE coin_watcher SET ${column_name} = ${price} WHERE ${time} - unix_time <= 20`;
 
       db.run(sql_price,[]);
+    }
+
+    catch (error) {
+      // if error.error.code
+      console.error(error.code)
+      console.error(error.error.code)
+      // console.error(error)
+      console.log("THERE WAS A ERROR BUT IT WAS CAUGHT!")
+    }
   }
   
   check_price();
