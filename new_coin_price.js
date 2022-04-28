@@ -5,12 +5,7 @@ let db = new sqlite3.Database('/home/nauris/Documents/GitHub/bot/coins.db', sqli
   if (err) {
     console.error(err.message);
   }
-  // console.log('Connected to the coins database.');
 });
-
-// let sql = `SELECT amount coinAmount,
-//                   address coinAddress
-//             FROM wallet WHERE amount != 0`;
 
 let sql = `SELECT address coinAddress,
                   id coinId
@@ -20,14 +15,12 @@ db.each(sql, [], (err, row) => {
   if (err) {
     throw err;
   }
-  // console.log(`
-  // ${row.coinAmount} - ${row.coinAddress}`);
+
 
   const ethers = require("ethers");
   var dateFormat = require("dateformat");
   
   const BUSD = "0xe9e7cea3dedca5984780bafc599bd69add087d56"; 
-  // const BUSD = row.coinAddress;
   const WBNB = row.coinAddress;
 
   
@@ -47,7 +40,7 @@ db.each(sql, [], (err, row) => {
   const routerContract = new ethers.Contract(
       router,
       [
-          'function getAmountsOut(uint amountIn, address[] memory path) public view returns (uint[] memory amounts)',
+        'function getAmountsOut(uint amountIn, address[] memory path) public view returns (uint[] memory amounts)',
       ],
       signer
   );
@@ -90,6 +83,7 @@ db.each(sql, [], (err, row) => {
       // if error.error.code
       console.error(error.code)
       console.error(error.error.code)
+      console.log(row.coinId)
       // console.error(error)
       console.log("THERE WAS A ERROR BUT IT WAS CAUGHT!")
     }

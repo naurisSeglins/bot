@@ -21,6 +21,7 @@ def checking_wallet():
         address = requests.get(wallet_url.format(*row, sep='')).text
         address = json.loads(address)
         balance = Decimal(address["result"]) / (10**18)
+        
 
         i = 0
         c.execute("UPDATE wallet SET amount = ? WHERE address = ?",(float(balance), str(row[i]),))
