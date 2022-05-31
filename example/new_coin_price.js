@@ -10,12 +10,11 @@ let db = new sqlite3.Database('/home/nauris/Documents/GitHub/bot/coins.db', sqli
 let sql = `SELECT address coinAddress,
                   id coinId
             FROM coins_on_scanner`;
-
+let Nr = 0
 db.each(sql, [], (err, row) => {
   if (err) {
     throw err;
   }
-
 
   const ethers = require("ethers");
   var dateFormat = require("dateformat");
@@ -73,8 +72,11 @@ db.each(sql, [], (err, row) => {
       column_name_time = `unix_time_${column_name_time}`
       console.log(column_name_time)
       console.log(time)
+      Nr++;
+      console.log(Nr)
 
-      let sql_price = `UPDATE coin_watcher SET ${column_name} = ${price} WHERE ${time} - unix_time <= 20`;
+
+      let sql_price = `UPDATE coin_watchersasd SET ${column_name} = ${price} WHERE ${time} - unix_time <= 20`;
 
       db.run(sql_price,[]);
     }
@@ -91,7 +93,6 @@ db.each(sql, [], (err, row) => {
   
   check_price();
 });
-
 
 
 function close_script(){

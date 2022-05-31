@@ -7,17 +7,35 @@ conn = sqlite3.connect("coins.db")
 
 c = conn.cursor()
 
-c.execute(""" CREATE TABLE coin_watcher (
-    unix_time int
-) """)
+# c.execute(""" CREATE TABLE coin_watcher (
+#     unix_time int
+# ) """)
 
 
-# c.execute(""" CREATE TABLE coins_on_scanner (
+# sql_query = ("ALTER TABLE wallet RENAME TO old_wallet")
+# c.execute(sql_query)
+
+# sql_query = ("ALTER TABLE old_wallet ADD first_price_bnb int")
+# c.execute(sql_query)
+
+# sql_query = ("ALTER TABLE wallet RENAME COLUMN percent TO percent_busd")
+# c.execute(sql_query)
+
+# sql_query = ("INSERT INTO wallet(id, address, unix_time) SELECT id, address, unix_time FROM old_wallet")
+# c.execute(sql_query)
+
+# c.execute(""" CREATE TABLE wallet (
 #     id text PRIMARY KEY,
-#     symbol text,
 #     address text,
-#     unix_time integer,
-#     timestamp DATE DEFAULT (datetime('now','localtime'))
+#     unix_time int,
+#     timestamp DATE DEFAULT (datetime('now','localtime')),
+#     amount int,
+#     first_price_bnb int,
+#     bnb_price int,
+#     percent_bnb int,
+#     percent_busd int,
+#     first_price_busd int,
+#     busd_price int
 # ) """)
 
 

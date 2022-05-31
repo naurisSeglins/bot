@@ -115,23 +115,23 @@ db.each(sql, [], (err, row) => {
       `);
 
   // *************************** pirkšanas funkcija ************************************
-      const tx = await router.swapExactTokensForTokens(
-        amountIn,
+    //   const tx = await router.swapExactTokensForTokens(
+    //     amountIn,
 
-        amountOutMin,
+    //     amountOutMin,
 
-        [tokenIn, tokenOut],
+    //     [tokenIn, tokenOut],
 
-        addresses.recipient,
+    //     addresses.recipient,
 
-        Date.now() + 1000 * 60 * 10,
+    //     Date.now() + 1000 * 60 * 10,
 
-        {gasLimit: 250000}
+    //     {gasLimit: 250000}
 
-      );
-    const receipt = await tx.wait();
-    console.log("Transaction receipt");
-    console.log(receipt);
+    //   );
+    // const receipt = await tx.wait();
+    // console.log("Transaction receipt");
+    // console.log(receipt);
   }
 
   init();

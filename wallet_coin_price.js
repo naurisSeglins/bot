@@ -18,7 +18,6 @@ db.each(sql, [], (err, row) => {
   }
 
   const ethers = require("ethers");
-  var dateFormat = require("dateformat");
   
   const BUSD = "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c"; 
   const WBNB = row.coinAddress;
@@ -46,14 +45,23 @@ db.each(sql, [], (err, row) => {
   
       const WBNBamountIn = ethers.utils.parseUnits(`${row.coinAmount}`, "ether");
       let amounts = await routerContract.getAmountsOut(WBNBamountIn, [WBNB, BUSD]);
-      const BUSDamountOutMin = amounts[1].sub(amounts[1].div(10));
+      // const BUSDamountOutMin = amounts[1].sub(amounts[1].div(10));
+      const BUSDamountOutMin = amounts[1];
+
 
       price = ethers.utils.formatEther(BUSDamountOutMin)
+
       let sql_price = `UPDATE wallet
       SET bnb_price = ${price}
       WHERE address = '${row.coinAddress}'`;
     
       db.run(sql_price,[]);
+
+      // let sql_first_price = `UPDATE OR IGNORE wallet
+      // SET first_price = ${price}
+      // WHERE address = '${row.coinAddress}'`;
+    
+      // db.run(sql_first_price,[]);
   }
   
   check_price();

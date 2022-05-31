@@ -5,14 +5,13 @@ import os
 from adding_coins_to_db import do_some_work
 from moving_new_coins import move_some_coins
 from my_wallet import checking_wallet
-from coin_watcher import add_coin_watcher
 
 
 if __name__ == "__main__":
 
     dateTimeObj = datetime.now()
     print("first time at: ", dateTimeObj)
-    cycle = 9
+    cycle = 8
 
     time.sleep(6)  # imagine you would like to start work in 6 sec first time
     while True:
@@ -31,32 +30,28 @@ if __name__ == "__main__":
 
             move_some_coins()
 
+            # dateTimeObj = datetime.now()
+            # print("buying new coins at: ", dateTimeObj)
+
+            # os.system('node buy_coins.js')
+
             print("reseting cycle")
             cycle = 0
+
         
         print("checking wallet how many coins at: ", cycleStart)
 
         checking_wallet()
 
         dateTimeObj = datetime.now()
-        print("inserting rows to watcher at: ", dateTimeObj)
+        print("checking prices in wallet at: ", dateTimeObj)
 
-        add_coin_watcher()
+        os.system('node wallet_coin_price.js')
 
-        dateTimeObj = datetime.now()
-        print("inserting new prices in coin watcher: ", dateTimeObj)
-
-        os.system('node new_coin_price.js')
 
         # dateTimeObj = datetime.now()
-        # print("checking prices in wallet at: ", dateTimeObj)
+        # print("selling coins at: ", dateTimeObj)
 
-        # os.system('node wallet_coin_price.js')
-
-        # dateTimeObj = datetime.now()
-        # print("buying new coins at: ", dateTimeObj)
-
-        # os.system('node buy_coins.js')
         # os.system('node sell_coins_git_yt.js')
 
         cycleEnd = datetime.now()
