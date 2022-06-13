@@ -42,6 +42,8 @@ db.each(sql, [], (err, row) => {
   );
 
   async function check_price() {
+  // function check_price() {
+
   
       const WBNBamountIn = ethers.utils.parseUnits(`${row.coinAmount}`, "ether");
       let amounts = await routerContract.getAmountsOut(WBNBamountIn, [WBNB, BUSD]);
@@ -50,7 +52,8 @@ db.each(sql, [], (err, row) => {
 
 
       price = ethers.utils.formatEther(BUSDamountOutMin)
-
+      // console.log(price)
+      // console.log(row.coinAddress)
       let sql_price = `UPDATE wallet
       SET bnb_price = ${price}
       WHERE address = '${row.coinAddress}'`;
@@ -66,7 +69,6 @@ db.each(sql, [], (err, row) => {
   
   check_price();
 });
-
 
 
 function close_script(){

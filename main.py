@@ -11,7 +11,7 @@ if __name__ == "__main__":
 
     dateTimeObj = datetime.now()
     print("first time at: ", dateTimeObj)
-    cycle = 8
+    cycle = 9
 
     time.sleep(6)  # imagine you would like to start work in 6 sec first time
     while True:
@@ -59,14 +59,14 @@ if __name__ == "__main__":
         cycleTime = cycleEnd - cycleStart
         print("cycle time =", cycleTime)
 
-        print("sleeping for 45 seconds at: ", cycleEnd)
+        print("sleeping for 20 seconds at: ", cycleEnd)
 
-        time.sleep(45)  # do work every one hour
+        time.sleep(20)  # do work every one hour
 
         cycle +=1
 
         dateTimeObj = datetime.now()
-        print("slept for 50 seconds at: ", dateTimeObj)
+        print("slept for 20 seconds at: ", dateTimeObj)
         # space between cycles
         print(" ")
         print(" ")

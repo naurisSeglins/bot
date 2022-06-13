@@ -79,8 +79,8 @@ def checking_wallet():
                 growth_perct = round(real_price / first_price * 100, 2)
                 c.execute("UPDATE wallet SET percent_bnb = ? WHERE address = ?", (growth_perct, data[2]))
         except:
+            print(data)
             print("there was error at wallet")
-            print(data[0])
 
 
     # deleting coins that don't have any amount in wallet
