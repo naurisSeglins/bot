@@ -7,8 +7,8 @@ conn = sqlite3.connect("coins.db")
 
 c = conn.cursor()
 
-# c.execute(""" CREATE TABLE coin_watcher (
-#     unix_time int
+# c.execute(""" CREATE TABLE testing_receipts (
+#     data1 text
 # ) """)
 
 

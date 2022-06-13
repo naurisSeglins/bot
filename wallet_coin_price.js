@@ -5,71 +5,58 @@ let db = new sqlite3.Database('/home/nauris/Documents/GitHub/bot/coins.db', sqli
   if (err) {
     console.error(err.message);
   }
-  // console.log('Connected to the coins database.');
+  console.log('Connected to the coins database.');
 });
 
 let sql = `SELECT amount coinAmount,
                   address coinAddress
             FROM wallet WHERE amount != 0`;
 
-db.each(sql, [], (err, row) => {
+
+db.all(sql, [], (err, rows) => {
   if (err) {
     throw err;
   }
-
-  const ethers = require("ethers");
-  
-  const BUSD = "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c"; 
-  const WBNB = row.coinAddress;
-  
-  const router = "0x10ED43C718714eb63d5aA57B78B54704E256024E";
-
-  const provider = new ethers.providers.WebSocketProvider("wss://speedy-nodes-nyc.moralis.io/a38b817304311265560d67b7/bsc/mainnet/ws");
-  
-  const mnemonic = "exercise dumb famous kingdom auto sweet celery position mad angry pioneer record";
-  
-  const wallet = new ethers.Wallet.fromMnemonic(mnemonic);
-  
-  const signer = wallet.connect(provider);
-  
-  
-  const routerContract = new ethers.Contract(
-      router,
-      [
-          'function getAmountsOut(uint amountIn, address[] memory path) public view returns (uint[] memory amounts)',
-      ],
-      signer
-  );
+  let allCoins = rows
 
   async function check_price() {
-  // function check_price() {
+    for (coin of allCoins) {
 
-  
-      const WBNBamountIn = ethers.utils.parseUnits(`${row.coinAmount}`, "ether");
-      let amounts = await routerContract.getAmountsOut(WBNBamountIn, [WBNB, BUSD]);
-      // const BUSDamountOutMin = amounts[1].sub(amounts[1].div(10));
+      const ethers = require("ethers");
+      
+      const BUSD = "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c"; 
+      const WBNB = coin.coinAddress;
+      const router = "0x10ED43C718714eb63d5aA57B78B54704E256024E";
+
+      const provider = new ethers.providers.WebSocketProvider("wss://speedy-nodes-nyc.moralis.io/a38b817304311265560d67b7/bsc/mainnet/ws");
+      
+      const mnemonic = "exercise dumb famous kingdom auto sweet celery position mad angry pioneer record";
+      
+      const wallet = new ethers.Wallet.fromMnemonic(mnemonic);
+      
+      const signer = wallet.connect(provider);
+      
+      const routerContract = new ethers.Contract(
+          router,
+          [
+              'function getAmountsOut(uint amountIn, address[] memory path) public view returns (uint[] memory amounts)',
+          ],
+          signer
+      );
+
+      const WBNBamountIn = ethers.utils.parseUnits(`${coin.coinAmount}`, "ether");
+      const amounts = await routerContract.getAmountsOut(WBNBamountIn, [WBNB, BUSD]);
       const BUSDamountOutMin = amounts[1];
 
-
       price = ethers.utils.formatEther(BUSDamountOutMin)
-      // console.log(price)
-      // console.log(row.coinAddress)
       let sql_price = `UPDATE wallet
       SET bnb_price = ${price}
-      WHERE address = '${row.coinAddress}'`;
-    
+      WHERE address = '${coin.coinAddress}'`;
       db.run(sql_price,[]);
-
-      // let sql_first_price = `UPDATE OR IGNORE wallet
-      // SET first_price = ${price}
-      // WHERE address = '${row.coinAddress}'`;
-    
-      // db.run(sql_first_price,[]);
+    }
   }
-  
   check_price();
 });
-
 
 function close_script(){
   db.close((err) => {
@@ -82,4 +69,3 @@ function close_script(){
 }
 
 setTimeout(close_script, 5000);
-
