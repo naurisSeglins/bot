@@ -58,12 +58,11 @@ def do_some_work():
     try:
         for ids in address:
             try:
-                # take out of the loop the strip method or use a if statement 
                 coin_address = ids["platforms"].get("binance-smart-chain")
-                # if coin_address[0] == " " or coin_address[-1] == " ":
-                #     print(coin_address)
-                #     coin_address = coin_address.strip()
-                # else:
+                if coin_address:
+                    if len(coin_address) < 21:
+                        print(ids)
+                        continue
                 c.execute("UPDATE OR IGNORE coins SET address = :address WHERE id = :id", {'address': coin_address,'id': ids["id"]})
             except:
                 print(coin_address[0], coin_address[-1])
