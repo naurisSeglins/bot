@@ -7,16 +7,16 @@ conn = sqlite3.connect("coins.db")
 
 c = conn.cursor()
 
-# c.execute(""" CREATE TABLE testing_receipts (
-#     data1 text
+# c.execute(""" CREATE TABLE bought_trx_approve (
+#     hash text
 # ) """)
 
 
 # sql_query = ("ALTER TABLE wallet RENAME TO old_wallet")
 # c.execute(sql_query)
 
-# sql_query = ("ALTER TABLE old_wallet ADD first_price_bnb int")
-# c.execute(sql_query)
+sql_query = ("ALTER TABLE wallet ADD last_percent_busd int")
+c.execute(sql_query)
 
 # sql_query = ("ALTER TABLE wallet RENAME COLUMN percent TO percent_busd")
 # c.execute(sql_query)

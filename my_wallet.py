@@ -1,3 +1,4 @@
+from audioop import add
 import sqlite3
 from unicodedata import decimal
 import requests
@@ -22,7 +23,13 @@ def checking_wallet():
         
         address = requests.get(wallet_url.format(*row, sep='')).text
         address = json.loads(address)
-        balance = Decimal(address["result"]) / (10**18)
+        try:
+            balance = Decimal(address["result"]) / (10**18)
+        except:
+            print("there was error")
+            print("for this row ", row)
+            print(address)
+            print(address["result"])
         
         i = 0
         # update how many coins per address I have

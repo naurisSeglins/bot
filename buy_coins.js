@@ -74,26 +74,32 @@ db.all(sql, [], (err, rows) => {
           router,
           WBNBamountIn
       );
-      let reciept = await approveTx.wait();
-      console.log(reciept);
-      console.log(reciept.transactionHash);
-      let trxHash  = String(reciept.transactionHash)
+      let app_reciept = await approveTx.wait();
+      console.log(app_reciept);
+      let appHash  = String(app_reciept.transactionHash)
+      let app_status = app_reciept.status
+      let sql_approve = `INSERT INTO bought_trx_approve VALUES('${appHash}', ${app_status})`;
+      db.run(sql_approve,[]);
+  
+      const swapTx = await routerContract.swapExactTokensForTokens(
+          WBNBamountIn,
+          BUSDamountOutMin,
+          [WBNB, BUSD],
+          recipient,
+          Date.now() + 1000 * 60 * 10,
+          {gasLimit: 350000}
+      )
+  
+      let receipt = await swapTx.wait();
+      console.log(receipt);
+      console.log(receipt.transactionHash);
+      console.log(receipt.status);
+      let trxHash  = String(receipt.transactionHash)
+      let trx_status = receipt.status
       console.log(trxHash);
-      let sql_price = `INSERT INTO testing_receipts VALUES('${trxHash}')`;
-      db.run(sql_price,[]);
-  
-      // const swapTx = await routerContract.swapExactTokensForTokens(
-      //     WBNBamountIn,
-      //     BUSDamountOutMin,
-      //     [WBNB, BUSD],
-      //     recipient,
-      //     Date.now() + 1000 * 60 * 10,
-      //     {gasLimit: 350000}
-      // )
-  
-      // let receipt = await swapTx.wait();
-      // console.log(receipt);
-
+      console.log(trx_status)
+      let sql_bought = `INSERT INTO bought_trx_history VALUES('${trxHash}','${coin.coinId}','${coin.coinAddress}',${trx_status})`;
+      db.run(sql_bought,[]);
     }
   }
   buy_coin();
