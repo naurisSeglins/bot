@@ -6,23 +6,20 @@ def calculate():
 
     c = conn.cursor()
 
-    c.execute("SELECT id FROM new_coins")
+    c.execute("SELECT percent_bnb, high_percent_bnb FROM wallet")
 
     rows = c.fetchall()
     print(rows)
 
     for row in rows:
+        if row[0]:
 
-        i = 0
-        coin_id = str(row[i]).replace("-", "_")
+            print("percent bnb = ",row[0])
+            print("highest percent bnb = ", row[1])
+            if row[2] - row[1] >= 10:
 
-        sql_query = ("ALTER TABLE coin_watcher ADD " + coin_id + " text")
-        
-        c.execute(sql_query)
-
-        i += 1
-
-    c.execute("INSERT INTO coins_on_scanner SELECT * FROM new_coins")
+                sql_query = ("INSERT INTO sell_coins SELECT id, address, unix_time, timestamp, amount FROM wallet")
+                c.execute(sql_query)
 
     conn.commit()
 

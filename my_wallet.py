@@ -112,15 +112,11 @@ def checking_wallet():
     for data in coin_data:
         # try:
         if data[0]:
-            print(data[0])
-            print(data[2])
             if data[2] == None:
                 c.execute("UPDATE wallet SET high_percent_bnb = ? WHERE address = ?", (data[0], data[4],))
             elif data[0] > data[2]:
                 c.execute("UPDATE wallet SET high_percent_bnb = ? WHERE address = ?", (data[0], data[4],))
         if data[1]:
-            print(data[1])
-            print(data[3])
             if data[3] == None:
                 c.execute("UPDATE wallet SET high_percent_busd = ? WHERE address = ?", (data[1], data[4],))
             elif data[1] > data[3]:

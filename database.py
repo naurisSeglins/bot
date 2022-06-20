@@ -7,22 +7,34 @@ conn = sqlite3.connect("coins.db")
 
 c = conn.cursor()
 
-# c.execute(""" CREATE TABLE bought_trx_approve (
-#     hash text
-# ) """)
+c.execute(""" CREATE TABLE sold_trx_history (
+    hash text,
+    coin_id text,
+    coin_address text,
+    status int
+) """)
 
 
 # sql_query = ("ALTER TABLE wallet RENAME TO old_wallet")
 # c.execute(sql_query)
 
-sql_query = ("ALTER TABLE wallet ADD last_percent_busd int")
-c.execute(sql_query)
+# sql_query = ("ALTER TABLE wallet ADD last_percent_busd int")
+# c.execute(sql_query)
 
 # sql_query = ("ALTER TABLE wallet RENAME COLUMN percent TO percent_busd")
 # c.execute(sql_query)
 
 # sql_query = ("INSERT INTO wallet(id, address, unix_time) SELECT id, address, unix_time FROM old_wallet")
 # c.execute(sql_query)
+
+# c.execute(""" CREATE TABLE sell_coins (
+#     id text PRIMARY KEY,
+#     address text,
+#     unix_time int,
+#     timestamp DATE DEFAULT (datetime('now','localtime')),
+#     amount int
+# ) """)
+
 
 # c.execute(""" CREATE TABLE wallet (
 #     id text PRIMARY KEY,
