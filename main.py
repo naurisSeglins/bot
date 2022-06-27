@@ -2,74 +2,84 @@ from datetime import datetime
 import time 
 import os
 
-from adding_coins_to_db import do_some_work
-from moving_new_coins import move_some_coins
-from my_wallet import checking_wallet
+from adding_coins_to_db import adding_new_coins_to_db
+from calculation import calculate
+from moving_new_coins import move_new_coins
+from my_wallet import updating_wallet
 
 
 if __name__ == "__main__":
 
     dateTimeObj = datetime.now()
     print("first time at: ", dateTimeObj)
-    cycle = 9
+    cycle = 4
 
     time.sleep(6)  # imagine you would like to start work in 6 sec first time
     while True:
-        cycleStart = datetime.now()
 
-        print("Cycle nr.",cycle)
+        cycleStart = datetime.now()
+        print("starting cycle Nr: ",cycle, " at: ", cycleStart)
 
         if cycle == 10:
 
-            print("doing the work at: ", cycleStart)
+            print("checking for new coins at: ", cycleStart)
+            adding_new_coins_to_db()
 
-            do_some_work()
 
             dateTimeObj = datetime.now()
             print("moving some new coins at: ", dateTimeObj)
+            move_new_coins()
 
-            move_some_coins()
 
-            # dateTimeObj = datetime.now()
-            # print("buying new coins at: ", dateTimeObj)
+            dateTimeObj = datetime.now()
+            print("buying new coins at: ", dateTimeObj)
+            os.system('node buy_coins.js')
 
-            # os.system('node buy_coins.js')
 
-            print("reseting cycle")
+            print("reseting cycle to 0")
             cycle = 0
+            cycleStart = datetime.now()
 
-        
+
         print("checking wallet how many coins at: ", cycleStart)
+        updating_wallet()
 
-        checking_wallet()
+
+        dateTimeObj = datetime.now()
+        print("calculating coins at: ", dateTimeObj)
+        calculate()
+
 
         dateTimeObj = datetime.now()
         print("checking prices in wallet at: ", dateTimeObj)
-
         os.system('node wallet_coin_price.js')
 
 
-        # dateTimeObj = datetime.now()
-        # print("selling coins at: ", dateTimeObj)
+        dateTimeObj = datetime.now()
+        print("checking wallet how many coins at: ", dateTimeObj)
+        updating_wallet()
 
-        # os.system('node sell_coins_git_yt.js')
+
+        dateTimeObj = datetime.now()
+        print("selling coins at: ", dateTimeObj)
+        os.system('node sell_coins.js')
+
 
         cycleEnd = datetime.now()
-
         cycleTime = cycleEnd - cycleStart
         print("cycle time =", cycleTime)
 
-        print("sleeping for 20 seconds at: ", cycleEnd)
 
-        time.sleep(20)  # do work every one hour
+        print("sleeping for 50 seconds at: ", cycleEnd)
+        time.sleep(50)  # do work every 50 seconds
+        dateTimeObj = datetime.now()
+        print("slept for 50 seconds at: ", dateTimeObj)
 
+
+        # add 1 to the cycle
         cycle +=1
 
-        dateTimeObj = datetime.now()
-        print("slept for 20 seconds at: ", dateTimeObj)
+
         # space between cycles
         print(" ")
         print(" ")
-
-
-        

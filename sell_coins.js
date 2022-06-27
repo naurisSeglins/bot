@@ -24,7 +24,7 @@ db.all(sql, [], (err, rows) => {
 
     for (coin of allCoins) {
 
-      console.log(coin)
+      // console.log(coin)
 
       const ethers = require("ethers");
     
@@ -67,16 +67,16 @@ db.all(sql, [], (err, rows) => {
       let amounts = await routerContract.getAmountsOut(BUSDamountIn, [BUSD, WBNB]);
       const WBNBamountOutMin = amounts[1].sub(amounts[1].div(10));
   
-      console.log("prices")
-      console.log(ethers.utils.formatEther(BUSDamountIn));
-      console.log(ethers.utils.formatEther(WBNBamountOutMin));
+      // console.log("prices")
+      // console.log(ethers.utils.formatEther(BUSDamountIn));
+      // console.log(ethers.utils.formatEther(WBNBamountOutMin));
   
       const approveTx = await wbnbContract.approve(
         router,
         BUSDamountIn
       );
       let app_reciept = await approveTx.wait();
-      console.log(app_reciept);
+      // console.log(app_reciept);
       let appHash  = String(app_reciept.transactionHash)
       let app_status = app_reciept.status
       let sql_approve = `INSERT INTO sold_trx_approve VALUES('${appHash}', ${app_status})`;
@@ -92,13 +92,13 @@ db.all(sql, [], (err, rows) => {
       )
 
       let receipt = await swapTx.wait();
-      console.log(receipt);
-      console.log(receipt.transactionHash);
-      console.log(receipt.status);
+      // console.log(receipt);
+      // console.log(receipt.transactionHash);
+      // console.log(receipt.status);
       let trxHash  = String(receipt.transactionHash)
       let trx_status = receipt.status
-      console.log(trxHash);
-      console.log(trx_status)
+      // console.log(trxHash);
+      // console.log(trx_status);
       let sql_bought = `INSERT INTO sold_trx_history VALUES('${trxHash}','${coin.coinId}','${coin.coinAddress}',${trx_status})`;
       db.run(sql_bought,[]);
     }

@@ -4,7 +4,7 @@ import json
 from datetime import datetime
 import time 
 
-def do_some_work():
+def adding_new_coins_to_db():
     conn = sqlite3.connect("coins.db")
 
     c = conn.cursor()

@@ -4,13 +4,14 @@ import json
 from datetime import datetime
 from decimal import Decimal
 
-def checking_wallet():
+def updating_wallet():
     conn = sqlite3.connect("coins.db")
 
     c = conn.cursor() 
 
     # copy coins from new coins to wallet
     c.execute("INSERT OR IGNORE INTO wallet(id, address, timestamp, unix_time) SELECT id, address, timestamp, unix_time FROM new_coins")
+
 
     # check how many coins per address I have
     c.execute("SELECT address FROM wallet")
@@ -35,54 +36,16 @@ def checking_wallet():
         i += 1
 
 
-    # saving last round percentage for busd and bnb
-    c.execute("SELECT percent_bnb, percent_busd, address FROM wallet")
+    # saving last round percentage for bnb
+    c.execute("SELECT percent_bnb, address FROM wallet")
     coin_data = c.fetchall()
 
     for data in coin_data:
         # try:
             if data[0]:
-                c.execute("UPDATE wallet SET last_percent_bnb = ? WHERE address = ?", (data[0], data[2]))
-            if data[1]:
-                c.execute("UPDATE wallet SET last_percent_busd = ? WHERE address = ?", (data[1], data[2]))
+                c.execute("UPDATE wallet SET last_percent_bnb = ? WHERE address = ?", (data[0], data[1]))
         # except:
         #     "there was this error here"
-
-
-    # getting the price of BUSD to convert later prices from BNB to BUSD
-    c.execute("SELECT bnb_price, address FROM wallet")
-    coin_data = c.fetchall()
-
-    for data in coin_data:
-        try:
-            if data[1] == "0xe9e7cea3dedca5984780bafc599bd69add087d56":
-                busd_price = data[0] / 3
-        except:
-            "there was error_2"
-
-
-    # calculating percentage growth or drop for coins in BUSD
-    c.execute("SELECT bnb_price, first_price_busd, address, busd_price FROM wallet")
-    coin_data = c.fetchall()
-
-    for data in coin_data:
-        try:
-            if data[0]:
-                # converting coins from BNB to BUSD
-                bnb_to_busd = data[0] / busd_price
-                c.execute("UPDATE wallet SET busd_price = ? WHERE address = ?", (bnb_to_busd, data[2]))
-
-                # updating the first_price of new coin in wallet once
-                c.execute("UPDATE OR IGNORE wallet SET first_price_busd = ? WHERE address = ? AND first_price_busd IS NULL",(bnb_to_busd, data[2],))
-
-                # calculating percentage
-                real_price = float(data[3])
-                first_price = float(data[1])
-                growth_perct = round(real_price / first_price * 100, 2)
-                c.execute("UPDATE wallet SET percent_busd = ? WHERE address = ?", (growth_perct, data[2]))
-        except:
-            print("there was error at wallet_1")
-            print(data[0])
 
 
     # calculating percentage growth or drop for coins in BNB
@@ -105,24 +68,20 @@ def checking_wallet():
             print("there was error at wallet_2")
 
 
-    # saving last round percentage for busd and bnb
-    c.execute("SELECT percent_bnb, percent_busd, high_percent_bnb, high_percent_busd, address FROM wallet")
+    # saving last round percentage for bnb
+    c.execute("SELECT percent_bnb, high_percent_bnb, address FROM wallet")
     coin_data = c.fetchall()
 
     for data in coin_data:
         # try:
         if data[0]:
-            if data[2] == None:
-                c.execute("UPDATE wallet SET high_percent_bnb = ? WHERE address = ?", (data[0], data[4],))
-            elif data[0] > data[2]:
-                c.execute("UPDATE wallet SET high_percent_bnb = ? WHERE address = ?", (data[0], data[4],))
-        if data[1]:
-            if data[3] == None:
-                c.execute("UPDATE wallet SET high_percent_busd = ? WHERE address = ?", (data[1], data[4],))
-            elif data[1] > data[3]:
-                c.execute("UPDATE wallet SET high_percent_busd = ? WHERE address = ?", (data[1], data[4],))
+            if data[1] == None:
+                c.execute("UPDATE wallet SET high_percent_bnb = ? WHERE address = ?", (data[0], data[2],))
+            elif data[0] > data[1]:
+                c.execute("UPDATE wallet SET high_percent_bnb = ? WHERE address = ?", (data[0], data[2],))
         # except:
         #     "there was this error here"
+
 
     # deleting coins that don't have any amount in wallet
     current_time = datetime.now()
