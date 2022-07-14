@@ -9,7 +9,6 @@
   "dependencies": {
     "why-is-node-running": "^2.2.0"
   },
-  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

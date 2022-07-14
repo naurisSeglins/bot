@@ -12,7 +12,7 @@ if __name__ == "__main__":
 
     dateTimeObj = datetime.now()
     print("first time at: ", dateTimeObj)
-    cycle = 4
+    cycle = 9
 
     time.sleep(6)  # imagine you would like to start work in 6 sec first time
     while True:
@@ -31,9 +31,9 @@ if __name__ == "__main__":
             move_new_coins()
 
 
-            dateTimeObj = datetime.now()
-            print("buying new coins at: ", dateTimeObj)
-            os.system('node buy_coins.js')
+            # dateTimeObj = datetime.now()
+            # print("buying new coins at: ", dateTimeObj)
+            # os.system('node buy_coins.js')
 
 
             print("reseting cycle to 0")

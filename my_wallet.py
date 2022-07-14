@@ -69,16 +69,16 @@ def updating_wallet():
 
 
     # saving last round percentage for bnb
-    c.execute("SELECT percent_bnb, high_percent_bnb, address FROM wallet")
+    c.execute("SELECT percent_bnb, highest_percent_bnb, address FROM wallet")
     coin_data = c.fetchall()
 
     for data in coin_data:
         # try:
         if data[0]:
             if data[1] == None:
-                c.execute("UPDATE wallet SET high_percent_bnb = ? WHERE address = ?", (data[0], data[2],))
+                c.execute("UPDATE wallet SET highest_percent_bnb = ? WHERE address = ?", (data[0], data[2],))
             elif data[0] > data[1]:
-                c.execute("UPDATE wallet SET high_percent_bnb = ? WHERE address = ?", (data[0], data[2],))
+                c.execute("UPDATE wallet SET highest_percent_bnb = ? WHERE address = ?", (data[0], data[2],))
         # except:
         #     "there was this error here"
 

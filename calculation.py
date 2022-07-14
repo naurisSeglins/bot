@@ -5,21 +5,26 @@ def calculate():
     conn = sqlite3.connect("coins.db")
 
     c = conn.cursor()
+    c.execute("DELETE FROM sell_coins")
 
-    c.execute("SELECT percent_bnb, high_percent_bnb FROM wallet")
+    c.execute("SELECT percent_bnb, highest_percent_bnb, address FROM wallet")
 
     rows = c.fetchall()
-    print(rows)
+    current_time = datetime.now()
 
     for row in rows:
         if row[0]:
+            if row[1] - row[0] >= 10:
+                print("percent bnb = ",row[0])
+                print("highest percent bnb = ", row[1])
+                address = str(row[2])
 
-            print("percent bnb = ",row[0])
-            print("highest percent bnb = ", row[1])
-            if row[2] - row[1] >= 10:
+                sql_query = ("INSERT INTO sell_coins SELECT id, address, unix_time, timestamp, amount FROM wallet WHERE address = ?")
+                c.execute(sql_query, (address,))
 
-                sql_query = ("INSERT INTO sell_coins SELECT id, address, unix_time, timestamp, amount FROM wallet")
-                c.execute(sql_query)
+                unix_time = datetime.timestamp(current_time)
+                c.execute("UPDATE sell_coins SET unix_time = ? WHERE address = ?",(unix_time, address,))
+
 
     conn.commit()
 

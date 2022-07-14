@@ -5,7 +5,7 @@ let db = new sqlite3.Database('/home/nauris/Documents/GitHub/bot/coins.db', sqli
   if (err) {
     console.error(err.message);
   }
-  console.log('Connected to the coins database.');
+  // console.log('Connected to the coins database.');
 });
 
 let sql = `SELECT id coinId,
@@ -20,7 +20,7 @@ db.all(sql, [], (err, rows) => {
   }
 
   let allCoins = rows
-  async function buy_coin() {    
+  async function sell_coin() {    
 
     for (coin of allCoins) {
 
@@ -49,11 +49,12 @@ db.all(sql, [], (err, rows) => {
         router,
         [
           'function getAmountsOut(uint amountIn, address[] memory path) public view returns (uint[] memory amounts)',
-          'function swapExactTokensForTokens(uint amountIn, uint amountOutMin, address[] calldata path, address to, uint deadline) external returns (uint[] memory amounts)'
+          'function swapExactTokensForETHSupportingFeeOnTransferTokens(uint amountIn, uint amountOutMin, address[] calldata path, address to, uint deadline) external returns (uint[] memory amounts)'
         ],
         signer
       );
       // nav skaidrs par šo funkciju vai ir jāmaina WBNB uz coinu adresi vai arī jāatstāj WBNB
+      // Mēģināšu samainīt WBNB uz BUSD jo kad funkcija tiek izsaukta kā parametrs tiek likts BUSD
       const wbnbContract = new ethers.Contract(
         WBNB,
         [
@@ -61,28 +62,31 @@ db.all(sql, [], (err, rows) => {
         ],
         signer
       )
-          
-      console.log("main buy function is called");
-      const BUSDamountIn = ethers.utils.parseUnits(`${coin.coinAmount}`, "ether");
+
+      console.log("main sell function is called");
+      // šeit ar amount varētu būt problēma!!!!
+      console.log(coin.coinAmount)
+      const BUSDamountIn = ethers.utils.parseUnits(`${coin.coinAmount}`, 9);
+      console.log(BUSDamountIn)
       let amounts = await routerContract.getAmountsOut(BUSDamountIn, [BUSD, WBNB]);
+      console.log(amounts)
       const WBNBamountOutMin = amounts[1].sub(amounts[1].div(10));
-  
-      // console.log("prices")
-      // console.log(ethers.utils.formatEther(BUSDamountIn));
-      // console.log(ethers.utils.formatEther(WBNBamountOutMin));
+      console.log(WBNBamountOutMin)
   
       const approveTx = await wbnbContract.approve(
         router,
         BUSDamountIn
       );
       let app_reciept = await approveTx.wait();
-      // console.log(app_reciept);
+      console.log("this is approve receipt")
+      console.log(app_reciept);
       let appHash  = String(app_reciept.transactionHash)
       let app_status = app_reciept.status
       let sql_approve = `INSERT INTO sold_trx_approve VALUES('${appHash}', ${app_status})`;
       db.run(sql_approve,[]);
-  
-      const swapTx = await routerContract.swapExactTokensForTokens(
+  // I got it to work. Because there is a selling fee for DOBO, you need to use swapExactTokensForTokensSupportingFeeOnTransferTokens instead of swapExactTokensForTokens. – 
+
+      const swapTx = await routerContract.swapExactTokensForETHSupportingFeeOnTransferTokens(
         BUSDamountIn,
         WBNBamountOutMin,
         [BUSD, WBNB],
@@ -92,7 +96,8 @@ db.all(sql, [], (err, rows) => {
       )
 
       let receipt = await swapTx.wait();
-      // console.log(receipt);
+      console.log("this is trx receipt")
+      console.log(receipt);
       // console.log(receipt.transactionHash);
       // console.log(receipt.status);
       let trxHash  = String(receipt.transactionHash)
@@ -103,6 +108,6 @@ db.all(sql, [], (err, rows) => {
       db.run(sql_bought,[]);
     }
   }
-  buy_coin();
+  sell_coin();
 
 });
