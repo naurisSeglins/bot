@@ -66,7 +66,11 @@ db.all(sql, [], (err, rows) => {
       console.log("main sell function is called");
       // šeit ar amount varētu būt problēma!!!!
       console.log(coin.coinAmount)
-      const BUSDamountIn = ethers.utils.parseUnits(`${coin.coinAmount}`, 9);
+      // if the coin decimal is 9 then have to multiple by this number = 1000000000
+      // if the coin decimal is 18 then have to multiple by this number = 1000000000000000000
+      let amount = coin.coinAmount * 1000000000
+      const BUSDamountIn = ethers.utils.parseUnits(`${amount}`, 9);
+
       console.log(BUSDamountIn)
       let amounts = await routerContract.getAmountsOut(BUSDamountIn, [BUSD, WBNB]);
       console.log(amounts)
