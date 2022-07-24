@@ -10,7 +10,7 @@ let db = new sqlite3.Database('/home/nauris/Documents/GitHub/bot/coins.db', sqli
 
 let sql = `SELECT id coinId,
                   address coinAddress
-            FROM new_coins`;
+            FROM buy_coins`;
 
 db.all(sql, [], (err, rows) => {
 

@@ -4,7 +4,7 @@ import os
 
 from adding_coins_to_db import adding_new_coins_to_db
 from calculation import calculate
-from moving_new_coins import move_new_coins
+from new_coins import move_new_coins
 from my_wallet import updating_wallet
 
 

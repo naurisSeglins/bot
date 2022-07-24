@@ -1,8 +1,8 @@
+from decimal import Decimal
 import sqlite3
 import requests
 import json
 from datetime import datetime
-from decimal import Decimal
 
 def updating_wallet():
     conn = sqlite3.connect("coins.db")
@@ -10,7 +10,9 @@ def updating_wallet():
     c = conn.cursor() 
 
     # copy coins from new coins to wallet
-    c.execute("INSERT OR IGNORE INTO wallet(id, address, timestamp, unix_time) SELECT id, address, timestamp, unix_time FROM new_coins")
+    # instead of copying all the new coins the new_coins.py script will copy coins from new_coins table to wallet table only the coins
+    # that are actually bought
+    # c.execute("INSERT OR IGNORE INTO wallet(id, address, timestamp, unix_time) SELECT id, address, timestamp, unix_time FROM new_coins")
 
 
     # check how many coins per address I have
@@ -68,7 +70,7 @@ def updating_wallet():
             print("there was error at wallet_2")
 
 
-    # saving last round percentage for bnb
+    # saving highest percentage for bnb recorded
     c.execute("SELECT percent_bnb, highest_percent_bnb, address FROM wallet")
     coin_data = c.fetchall()
 
@@ -84,6 +86,10 @@ def updating_wallet():
 
 
     # deleting coins that don't have any amount in wallet
+    # after new changes this script will be useless because there won't be coins in wallet that don't have amount
+    # except there might be situations when a coin didn't sell all of it's token so if the coin is automatically deleted
+    # then it will be lost.
+    # Maybe better to leave it in wallet until the amount is 0?
     current_time = datetime.now()
     unix_time = datetime.timestamp(current_time) - 600
     c.execute("DELETE FROM wallet WHERE unix_time < :unix_time AND amount = 0",{'unix_time': unix_time})
@@ -92,3 +98,6 @@ def updating_wallet():
     conn.commit()
 
     conn.close()
+
+
+updating_wallet()
