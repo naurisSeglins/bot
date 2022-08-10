@@ -16,11 +16,9 @@ def calculate_wallet():
     coin_data = c.fetchall()
 
     for data in coin_data:
-        # try:
             if data[0]:
                 c.execute("UPDATE wallet SET last_percent_bnb = ? WHERE address = ?", (data[0], data[1]))
-        # except:
-        #     "there was this error here"
+
 
 
     # calculating percentage growth or drop for coins in BNB
@@ -48,14 +46,11 @@ def calculate_wallet():
     coin_data = c.fetchall()
 
     for data in coin_data:
-        # try:
         if data[0]:
             if data[1] == None:
                 c.execute("UPDATE wallet SET highest_percent_bnb = ? WHERE address = ?", (data[0], data[2],))
             elif data[0] > data[1]:
                 c.execute("UPDATE wallet SET highest_percent_bnb = ? WHERE address = ?", (data[0], data[2],))
-        # except:
-        #     "there was this error here"
 
 
     # this is calculation to decide if the coin needs to be selled
@@ -95,11 +90,8 @@ def calculate_new_coins():
     coin_data = c.fetchall()
 
     for data in coin_data:
-        # try:
             if data[0]:
                 c.execute("UPDATE new_coins SET last_percent_bnb = ? WHERE address = ?", (data[0], data[1]))
-        # except:
-        #     "there was this error here"
 
 
     # calculating percentage growth or drop for coins in BNB
@@ -139,8 +131,8 @@ def calculate_new_coins():
 
     for row in rows:
         if row[0]:
-            # checking if new coin price has gone up for 10%
-            if row[0] - row[1] >= 10:
+            # checking if new coin price has gone up for 5%
+            if row[0] - row[1] >= 5:
                 print("percent bnb = ",row[0])
                 print("highest percent bnb = ", row[1])
                 address = str(row[2])

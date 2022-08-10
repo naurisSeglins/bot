@@ -10,7 +10,8 @@ let db = new sqlite3.Database('/home/nauris/Documents/GitHub/bot/coins.db', sqli
 
 let sql = `SELECT id coinId,
                   address coinAddress,
-                  amount coinAmount
+                  amount coinAmount,
+                  decimal decimal
             FROM sell_coins`;
 
 db.all(sql, [], (err, rows) => {
@@ -68,8 +69,13 @@ db.all(sql, [], (err, rows) => {
       console.log(coin.coinAmount)
       // if the coin decimal is 9 then have to multiple by this number = 1000000000
       // if the coin decimal is 18 then have to multiple by this number = 1000000000000000000
-      let amount = coin.coinAmount * 1000000000
-      const BUSDamountIn = ethers.utils.parseUnits(`${amount}`, 9);
+      let multiplier = 1000000000000000000
+      if (coin.decimal == 9){
+        multiplier = 1000000000
+      }
+
+      let amount = coin.coinAmount * multiplier
+      const BUSDamountIn = ethers.utils.parseUnits(`${amount}`, coin.decimal);
 
       console.log(BUSDamountIn)
       let amounts = await routerContract.getAmountsOut(BUSDamountIn, [BUSD, WBNB]);
