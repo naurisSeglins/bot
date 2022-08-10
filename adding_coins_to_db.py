@@ -9,6 +9,7 @@ def adding_new_coins_to_db():
 
     c = conn.cursor()
 
+    # coin adding to database
     url = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=eur&order=market_cap_desc&per_page=999&page={}&sparkline=false"
 
     url_add = "https://api.coingecko.com/api/v3/coins/list?include_platform=true"
@@ -39,6 +40,8 @@ def adding_new_coins_to_db():
 
         i += 1
     time.sleep(5)  # do work every one hour
+
+    # address adding
     index_ok = 0
     while index_ok == 0:
 

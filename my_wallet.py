@@ -38,53 +38,6 @@ def updating_wallet():
         i += 1
 
 
-    # saving last round percentage for bnb
-    c.execute("SELECT percent_bnb, address FROM wallet")
-    coin_data = c.fetchall()
-
-    for data in coin_data:
-        # try:
-            if data[0]:
-                c.execute("UPDATE wallet SET last_percent_bnb = ? WHERE address = ?", (data[0], data[1]))
-        # except:
-        #     "there was this error here"
-
-
-    # calculating percentage growth or drop for coins in BNB
-    c.execute("SELECT bnb_price, first_price_bnb, address FROM wallet")
-    coin_data = c.fetchall()
-
-    for data in coin_data:
-        try:
-            if data[0]:
-                # updating the first_price of new coin in wallet once
-                c.execute("UPDATE OR IGNORE wallet SET first_price_bnb = ? WHERE address = ? AND first_price_bnb IS NULL",(data[0], data[2],))
-
-                # calculating percentage
-                real_price = float(data[0])
-                first_price = float(data[1])
-                growth_perct = round(real_price / first_price * 100, 2)
-                c.execute("UPDATE wallet SET percent_bnb = ? WHERE address = ?", (growth_perct, data[2]))
-        except:
-            print(data)
-            print("there was error at wallet_2")
-
-
-    # saving highest percentage for bnb recorded
-    c.execute("SELECT percent_bnb, highest_percent_bnb, address FROM wallet")
-    coin_data = c.fetchall()
-
-    for data in coin_data:
-        # try:
-        if data[0]:
-            if data[1] == None:
-                c.execute("UPDATE wallet SET highest_percent_bnb = ? WHERE address = ?", (data[0], data[2],))
-            elif data[0] > data[1]:
-                c.execute("UPDATE wallet SET highest_percent_bnb = ? WHERE address = ?", (data[0], data[2],))
-        # except:
-        #     "there was this error here"
-
-
     # deleting coins that don't have any amount in wallet
     # after new changes this script will be useless because there won't be coins in wallet that don't have amount
     # except there might be situations when a coin didn't sell all of it's token so if the coin is automatically deleted

@@ -110,6 +110,8 @@ db.all(sql, [], (err, rows) => {
       // console.log(trx_status);
       let sql_bought = `INSERT INTO sold_trx_history VALUES('${trxHash}','${coin.coinId}','${coin.coinAddress}',${trx_status})`;
       db.run(sql_bought,[]);
+      let sell_coins_table = `UPDATE sell_coins SET status = ${trx_status} WHERE address = '${coin.coinAddress}'`;
+      db.run(sell_coins_table,[]);
     }
   }
   sell_coin();

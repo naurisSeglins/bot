@@ -15,11 +15,13 @@ c = conn.cursor()
 # ) """)
 
 
-sql_query = ("ALTER TABLE new_wallet RENAME TO wallet")
+# sql_query = ("ALTER TABLE new_wallet RENAME TO wallet")
+# c.execute(sql_query)
+
+
+sql_query = ("ALTER TABLE sell_coins ADD decimal int DEFAULT 18")
 c.execute(sql_query)
 
-# sql_query = ("ALTER TABLE wallet ADD last_percent_busd int")
-# c.execute(sql_query)
 
 # sql_query = ("INSERT INTO new_wallet(id, address, unix_time, timestamp, amount, first_price_bnb, bnb_price, percent_bnb, highest_percent_bnb, last_percent_bnb) SELECT id, address, unix_time, timestamp, amount, first_price_bnb, bnb_price, percent_bnb, high_percent_bnb, last_percent_bnb FROM wallet;")
 # c.execute(sql_query)
@@ -28,12 +30,11 @@ c.execute(sql_query)
 # sql_query = ("INSERT INTO wallet(id, address, unix_time) SELECT id, address, unix_time FROM old_wallet")
 # c.execute(sql_query)
 
-# c.execute(""" CREATE TABLE sell_coins (
+# c.execute(""" CREATE TABLE buy_coins (
 #     id text PRIMARY KEY,
 #     address text,
 #     unix_time int,
-#     timestamp DATE DEFAULT (datetime('now','localtime')),
-#     amount int
+#     timestamp DATE DEFAULT (datetime('now','localtime'))
 # ) """)
 
 
