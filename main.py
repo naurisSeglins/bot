@@ -14,7 +14,7 @@ if __name__ == "__main__":
 
     dateTimeObj = datetime.now()
     print("first time at: ", dateTimeObj)
-    cycle = 9
+    cycle = 1
 
     time.sleep(6)  # imagine you would like to start work in 6 sec first time
     while True:
@@ -23,7 +23,7 @@ if __name__ == "__main__":
         print("starting cycle Nr: ",cycle, " at: ", cycleStart)
 
         # this is coin adding
-        if cycle == 10:
+        if cycle == 7:
 
             # checking all coins from coingecko and adding coins to the db that aren't in db
             # checking address for all coins and adding it to coins that have a bsc address
@@ -39,7 +39,6 @@ if __name__ == "__main__":
             print("reseting cycle to 0")
             cycle = 0
             cycleStart = datetime.now()
-
 
 
         # this is coin selling
@@ -64,8 +63,6 @@ if __name__ == "__main__":
 
 
         # this is coin buying
-
-        # checking price for all the new coins
         dateTimeObj = datetime.now()
         print("checking prices for new coins at: ", dateTimeObj)
         os.system('node new_coin_price.js')

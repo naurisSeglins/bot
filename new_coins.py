@@ -7,6 +7,7 @@ def move_new_coins():
     c = conn.cursor()
 
     current_time = datetime.now()
+    # inserting into new_coins table from coins table if coin is within 300 sec young (5mins)
     unix_time = datetime.timestamp(current_time) - 300
     # adding new coins to the new_coins table
     c.execute("INSERT OR IGNORE INTO new_coins(id, symbol, address, unix_time, timestamp) SELECT id, symbol, address, unix_time, timestamp FROM coins WHERE unix_time > :unix_time",{'unix_time': unix_time})

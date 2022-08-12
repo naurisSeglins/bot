@@ -38,6 +38,8 @@ db.all(sql, [], (err, rows) => {
       
       // const provider = new ethers.providers.WebSocketProvider("wss://bsc-ws-node.nariox.org:443");
       const provider = new ethers.providers.JsonRpcProvider("https://bsc.getblock.io/mainnet/?api_key=1086c980-0118-4f0e-85dd-67f7172336dd");
+      // const provider = new ethers.providers.WebSocketProvider("wss://ws-nd-277-117-011.p2pify.com/1d52263f7bf104663499af684793dfcb");
+
       
       const mnemonic = "exercise dumb famous kingdom auto sweet celery position mad angry pioneer record";
       

@@ -16,6 +16,8 @@ def decimal_fixing():
 
 
     # if the transaction fails and decimal is 18 change it to 9
+    # !!!!!!!!!!!!!!!! if the transaction fails then the structure changes and the status is not update therefore
+    # !!!!!!!!!!!!!!!! there is a need for a new way of caching the status of failed transaction.
     for data in coin_data:
             if data[1]:
                 if data[1] == 0 and data[2] == 18:
@@ -23,7 +25,7 @@ def decimal_fixing():
 
 
     # if the transaction succeeds then delete it from sell coins
-    c.execute("DELETE FROM sell_coins WHERE status = ?", (1))
+    c.execute("DELETE FROM sell_coins WHERE status = ?", (1,))
 
     conn.commit()
 

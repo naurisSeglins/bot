@@ -66,7 +66,7 @@ def calculate_wallet():
                 print("highest percent bnb = ", row[1])
                 address = str(row[2])
 
-                sql_query = ("INSERT INTO sell_coins SELECT id, address, unix_time, timestamp, amount FROM wallet WHERE address = ?")
+                sql_query = ("INSERT OR IGNORE INTO sell_coins(id, address, unix_time, timestamp, amount) SELECT id, address, unix_time, timestamp, amount FROM wallet WHERE address = ?")
                 c.execute(sql_query, (address,))
 
                 unix_time = datetime.timestamp(current_time)

@@ -3,6 +3,7 @@ import sqlite3
 import requests
 import json
 from datetime import datetime
+import numpy as np
 
 def updating_wallet():
     conn = sqlite3.connect("coins.db")
@@ -26,6 +27,12 @@ def updating_wallet():
         address = json.loads(address)
         try:
             balance = Decimal(address["result"]) / (10**18)
+            # there is still issue with super small numbers because they can't be converted to normal float they cannot be selled 
+            # for example 5.85914746284e-7
+            # this issue is connected to the problem that not all coins are sold but little tiny bits are left
+            # print("old format: ", balance)
+            # balance = np.format_float_positional(float(address["result"]), trim='-')
+            # print("old new format: ", balance)
         except:
             print("there was error")
             print("for this row ", row)
