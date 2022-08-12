@@ -3,7 +3,6 @@ import sqlite3
 import requests
 import json
 from datetime import datetime
-import numpy as np
 
 def updating_wallet():
     conn = sqlite3.connect("coins.db")
