@@ -5,7 +5,6 @@ let db = new sqlite3.Database('/home/nauris/Documents/GitHub/bot/coins.db', sqli
   if (err) {
     console.error(err.message);
   }
-  // console.log('Connected to the coins database.');
 });
 
 let sql = `SELECT id coinId,
@@ -15,7 +14,6 @@ let sql = `SELECT id coinId,
             FROM sell_coins`;
 
 db.all(sql, [], (err, rows) => {
-
 
   let allCoins = rows
   async function sell_coin() {    
@@ -64,7 +62,7 @@ db.all(sql, [], (err, rows) => {
 
         console.log("main sell function is called");
         // šeit ar amount varētu būt problēma!!!!
-        console.log(coin.coinAmount)
+        console.log(coin.coinAddress)
         // if the coin decimal is 9 then have to multiple by this number = 1000000000
         // if the coin decimal is 18 then have to multiple by this number = 1000000000000000000
         let multiplier = 1000000000000000000
@@ -75,19 +73,15 @@ db.all(sql, [], (err, rows) => {
         let amount = coin.coinAmount * multiplier
         const BUSDamountIn = ethers.utils.parseUnits(`${amount}`, coin.decimal);
 
-        console.log(BUSDamountIn)
         let amounts = await routerContract.getAmountsOut(BUSDamountIn, [BUSD, WBNB]);
-        console.log(amounts)
         const WBNBamountOutMin = amounts[1].sub(amounts[1].div(10));
-        console.log(WBNBamountOutMin)
     
         const approveTx = await wbnbContract.approve(
           router,
           BUSDamountIn
         );
         let app_reciept = await approveTx.wait();
-        console.log("this is approve receipt")
-        console.log(app_reciept);
+        console.log("this is approve receipt status: ", app_reciept.status)
         let appHash  = String(app_reciept.transactionHash)
         let app_status = app_reciept.status
         let sql_approve = `INSERT INTO sold_trx_approve VALUES('${appHash}', ${app_status})`;
@@ -104,8 +98,8 @@ db.all(sql, [], (err, rows) => {
         )
 
         let receipt = await swapTx.wait();
-        console.log("this is trx receipt")
-        console.log("receipt ",receipt);
+        console.log("this is sell trx status: ",receipt.status);
+
         let trxHash  = String(receipt.transactionHash)
         let trx_status = receipt.status
 
@@ -116,12 +110,13 @@ db.all(sql, [], (err, rows) => {
 
       // catch (err) ir nepieciešams, lai zem err tiktu saglabāts error response
       } catch (err) {
-        console.log("this is error: ", err)
-        console.log("this is status: ", err.receipt.status)
+        console.log("this is sell trx error status: ", err.receipt.status)
         // šeit tiek paņemts errora receipt status kurš ir 0 un pievienots sell_table table
         let trx_status = err.receipt.status
         let sell_coins_table = `UPDATE sell_coins SET status = ${trx_status} WHERE address = '${coin.coinAddress}'`;
         db.run(sell_coins_table,[]);
+        // nepieciešams skaits cik reizes coinam ir izmests errors !!!!!
+
         // continue ir vajadzīgs lai pie errora programma neapstātos, bet turpinātu strādāt tālāk
         continue;
       }

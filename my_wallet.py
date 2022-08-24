@@ -41,8 +41,15 @@ def updating_wallet():
         i = 0
         # update how many coins per address I have
         c.execute("UPDATE wallet SET amount = ? WHERE address = ?",(float(balance), str(row[i]),))
+
         i += 1
 
+    c.execute("SELECT address, amount FROM wallet")
+    rows = c.fetchall()
+
+    for row in rows:
+        if row[1]:
+            c.execute("DELETE FROM buy_coins WHERE address = ?", (str(row[0]),))
 
     # deleting coins that don't have any amount in wallet
     # after new changes this script will be useless because there won't be coins in wallet that don't have amount
@@ -51,7 +58,7 @@ def updating_wallet():
     # Maybe better to leave it in wallet until the amount is 0?
     current_time = datetime.now()
     unix_time = datetime.timestamp(current_time) - 600
-    c.execute("DELETE FROM wallet WHERE unix_time < :unix_time AND amount = 0",{'unix_time': unix_time})
+    # c.execute("DELETE FROM wallet WHERE unix_time < :unix_time AND amount = 0",{'unix_time': unix_time})
     c.execute("UPDATE OR IGNORE wallet SET unix_time = ? WHERE unix_time IS NULL",(unix_time,))
 
     conn.commit()

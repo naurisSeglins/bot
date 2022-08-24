@@ -1,7 +1,6 @@
 {
   "name": "bot",
   "version": "1.0.0",
-  "description": "",
   "main": "buy_coins.js",
   "directories": {
     "example": "example"
@@ -23,5 +22,7 @@
   "bugs": {
     "url": "https://github.com/naurisSeglins/bot/issues"
   },
-  "homepage": "https://github.com/naurisSeglins/bot#readme"
+  "homepage": "https://github.com/naurisSeglins/bot#readme",
+  "devDependencies": {},
+  "description": ""
 }

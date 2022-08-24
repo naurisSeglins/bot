@@ -19,8 +19,9 @@ def decimal_fixing():
     # !!!!!!!!!!!!!!!! if the transaction fails then the structure changes and the status is not update therefore
     # !!!!!!!!!!!!!!!! there is a need for a new way of caching the status of failed transaction.
     for data in coin_data:
-            if data[1]:
+            if not data[1] == None:
                 if data[1] == 0 and data[2] == 18:
+                    print("setting decimal to 9 to coin: ", data[0])
                     c.execute("UPDATE sell_coins SET decimal = ? WHERE address = ?", (9, data[0]))
 
 

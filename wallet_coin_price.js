@@ -53,7 +53,7 @@ db.all(sql, [], (err, rows) => {
       const BUSDamountOutMin = amounts[1];
 
       price = ethers.utils.formatEther(BUSDamountOutMin)
-      console.log("this is wallet coin price: ", price)
+      // console.log("this is wallet coin price: ", price)
       let sql_price = `UPDATE wallet
       SET bnb_price = ${price}
       WHERE address = '${coin.coinAddress}'`;
