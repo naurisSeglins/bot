@@ -94,7 +94,7 @@ db.all(sql, [], (err, rows) => {
           [BUSD, WBNB],
           recipient,
           Date.now() + 1000 * 60 * 10,
-          {gasLimit: 350000}
+          {gasLimit: 1000000}
         )
 
         let receipt = await swapTx.wait();
@@ -111,8 +111,12 @@ db.all(sql, [], (err, rows) => {
       // catch (err) ir nepieciešams, lai zem err tiktu saglabāts error response
       } catch (err) {
         console.log("this is sell trx error status: ", err.receipt.status)
-        // šeit tiek paņemts errora receipt status kurš ir 0 un pievienots sell_table table
+        let trxHash  = String(err.receipt.transactionHash)
         let trx_status = err.receipt.status
+        let sql_sell = `INSERT INTO sold_trx_history VALUES('${trxHash}','${coin.coinId}','${coin.coinAddress}',${trx_status})`;
+        db.run(sql_sell,[]);
+
+        // šeit tiek paņemts errora receipt status kurš ir 0 un pievienots sell_table table
         let sell_coins_table = `UPDATE sell_coins SET status = ${trx_status} WHERE address = '${coin.coinAddress}'`;
         db.run(sell_coins_table,[]);
         // nepieciešams skaits cik reizes coinam ir izmests errors !!!!!

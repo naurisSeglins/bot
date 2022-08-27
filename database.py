@@ -19,7 +19,7 @@ c = conn.cursor()
 # c.execute(sql_query)
 
 
-# sql_query = ("ALTER TABLE sell_coins ADD decimal int DEFAULT 18")
+# sql_query = ("ALTER TABLE bought_trx_approve ADD timestamp DATE DEFAULT (datetime('now','localtime'))")
 # c.execute(sql_query)
 
 
@@ -27,15 +27,16 @@ c = conn.cursor()
 # c.execute(sql_query)
 
 
-sql_query = ("INSERT INTO wallet(id, address, unix_time) SELECT id, address, unix_time FROM buy_coins")
-c.execute(sql_query)
+# sql_query = ("INSERT INTO wallet(id, address, unix_time) SELECT id, address, unix_time FROM buy_coins")
+# c.execute(sql_query)
 
-# c.execute(""" CREATE TABLE buy_coins (
-#     id text PRIMARY KEY,
-#     address text,
-#     unix_time int,
-#     timestamp DATE DEFAULT (datetime('now','localtime'))
-# ) """)
+c.execute(""" CREATE TABLE sold_trx_history (
+    hash text,
+    id text,
+    address text,
+    status int,
+    timestamp DATE DEFAULT (datetime('now','localtime'))
+) """)
 
 
 # c.execute(""" CREATE TABLE new_wallet (

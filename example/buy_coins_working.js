@@ -27,7 +27,7 @@ db.all(sql, [], (err, rows) => {
       const ethers = require("ethers");
     
       const WBNB = "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c"; 
-      const BUSD = coin.coinAddress;
+      const BUSD = "0x748ed23b57726617069823dc1e6267c8302d4e76";
       
       const router = "0x10ED43C718714eb63d5aA57B78B54704E256024E";
       
@@ -77,17 +77,17 @@ db.all(sql, [], (err, rows) => {
       let reciept = await approveTx.wait();
       console.log(reciept);
   
-      // const swapTx = await routerContract.swapExactTokensForTokens(
-      //     WBNBamountIn,
-      //     BUSDamountOutMin,
-      //     [WBNB, BUSD],
-      //     recipient,
-      //     Date.now() + 1000 * 60 * 10,
-      //     {gasLimit: 350000}
-      // )
+      const swapTx = await routerContract.swapExactTokensForTokens(
+          WBNBamountIn,
+          BUSDamountOutMin,
+          [WBNB, BUSD],
+          recipient,
+          Date.now() + 1000 * 60 * 10,
+          {gasLimit: 350000}
+      )
   
-      // let receipt = await swapTx.wait();
-      // console.log(receipt);
+      let receipt = await swapTx.wait();
+      console.log(receipt);
     }
     
   }
