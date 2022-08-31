@@ -84,7 +84,7 @@ db.all(sql, [], (err, rows) => {
         // console.log(app_reciept);
         let appHash  = String(app_reciept.transactionHash)
         let app_status = app_reciept.status
-        let sql_approve = `INSERT INTO bought_trx_approve VALUES('${appHash}', ${app_status})`;
+        let sql_approve = `INSERT INTO bought_trx_approve(hash, status) VALUES('${appHash}', ${app_status})`;
         db.run(sql_approve,[]);
         
         const swapTx = await routerContract.swapExactTokensForTokens(
@@ -104,7 +104,7 @@ db.all(sql, [], (err, rows) => {
         let trx_status = receipt.status
         console.log(trxHash);
         console.log(trx_status)
-        let sql_bought = `INSERT INTO bought_trx_history VALUES('${trxHash}','${coin.coinId}','${coin.coinAddress}',${trx_status})`;
+        let sql_bought = `INSERT INTO bought_trx_history(hash, id, address, status) VALUES('${trxHash}','${coin.coinId}','${coin.coinAddress}',${trx_status})`;
         db.run(sql_bought,[]);
 
       
@@ -113,7 +113,7 @@ db.all(sql, [], (err, rows) => {
         console.log("this is buy trx error status: ", err.receipt.status)
         let trxHash  = String(err.receipt.transactionHash)
         let trx_status = err.receipt.status
-        let sql_bought = `INSERT INTO bought_trx_history VALUES('${trxHash}','${coin.coinId}','${coin.coinAddress}',${trx_status})`;
+        let sql_bought = `INSERT INTO bought_trx_history(hash, id, address, status) VALUES('${trxHash}','${coin.coinId}','${coin.coinAddress}',${trx_status})`;
         db.run(sql_bought,[]);
         // nepieciešams skaits cik reizes coinam ir izmests errors !!!!!
 

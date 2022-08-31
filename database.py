@@ -30,7 +30,7 @@ c = conn.cursor()
 # sql_query = ("INSERT INTO wallet(id, address, unix_time) SELECT id, address, unix_time FROM buy_coins")
 # c.execute(sql_query)
 
-c.execute(""" CREATE TABLE sold_trx_history (
+c.execute(""" CREATE TABLE bought_trx_history (
     hash text,
     id text,
     address text,

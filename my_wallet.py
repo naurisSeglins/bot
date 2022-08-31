@@ -46,7 +46,7 @@ def updating_wallet():
 
     c.execute("SELECT address, amount FROM wallet")
     rows = c.fetchall()
-
+    
     for row in rows:
         if row[1]:
             c.execute("DELETE FROM buy_coins WHERE address = ?", (str(row[0]),))

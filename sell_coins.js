@@ -84,7 +84,7 @@ db.all(sql, [], (err, rows) => {
         console.log("this is approve receipt status: ", app_reciept.status)
         let appHash  = String(app_reciept.transactionHash)
         let app_status = app_reciept.status
-        let sql_approve = `INSERT INTO sold_trx_approve VALUES('${appHash}', ${app_status})`;
+        let sql_approve = `INSERT INTO sold_trx_approve(hash, status) VALUES('${appHash}', ${app_status})`;
         db.run(sql_approve,[]);
 
 
@@ -103,7 +103,7 @@ db.all(sql, [], (err, rows) => {
         let trxHash  = String(receipt.transactionHash)
         let trx_status = receipt.status
 
-        let sql_bought = `INSERT INTO sold_trx_history VALUES('${trxHash}','${coin.coinId}','${coin.coinAddress}',${trx_status})`;
+        let sql_bought = `INSERT INTO sold_trx_history(hash, id, address, status) VALUES('${trxHash}','${coin.coinId}','${coin.coinAddress}',${trx_status})`;
         db.run(sql_bought,[]);
         let sell_coins_table = `UPDATE sell_coins SET status = ${trx_status} WHERE address = '${coin.coinAddress}'`;
         db.run(sell_coins_table,[]);
@@ -113,7 +113,7 @@ db.all(sql, [], (err, rows) => {
         console.log("this is sell trx error status: ", err.receipt.status)
         let trxHash  = String(err.receipt.transactionHash)
         let trx_status = err.receipt.status
-        let sql_sell = `INSERT INTO sold_trx_history VALUES('${trxHash}','${coin.coinId}','${coin.coinAddress}',${trx_status})`;
+        let sql_sell = `INSERT INTO sold_trx_history(hash, id, address, status) VALUES('${trxHash}','${coin.coinId}','${coin.coinAddress}',${trx_status})`;
         db.run(sql_sell,[]);
 
         // šeit tiek paņemts errora receipt status kurš ir 0 un pievienots sell_table table

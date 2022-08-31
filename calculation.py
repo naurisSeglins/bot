@@ -28,6 +28,7 @@ def calculate_wallet():
     for data in coin_data:
         try:
             if data[0]:
+                # šeit veidojas errors jo pirmo reizi first_price_bnb ir None!
                 # updating the first_price of new coin in wallet once
                 c.execute("UPDATE OR IGNORE wallet SET first_price_bnb = ? WHERE address = ? AND first_price_bnb IS NULL",(data[0], data[2],))
 
