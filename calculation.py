@@ -128,11 +128,11 @@ def calculate_new_coins():
 
     for data in coin_data:
         if data[0]:
-            c.execute("UPDATE new_coins SET highest_percent_bnb = ? WHERE address = ? AND highest_percent_bnb IS NULL", (data[0], data[1],))
+            c.execute("UPDATE new_coins SET first_percent_bnb = ? WHERE address = ? AND first_percent_bnb IS NULL", (data[0], data[1],))
 
 
     # this is a calculation to decide if the coin needs to be bought
-    c.execute("SELECT percent_bnb, highest_percent_bnb, address FROM new_coins")
+    c.execute("SELECT percent_bnb, first_percent_bnb, address FROM new_coins")
 
     rows = c.fetchall()
     current_time = datetime.now()
