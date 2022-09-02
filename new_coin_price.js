@@ -38,9 +38,11 @@ db.all(sql, [], (err, rows) => {
             router,
             [
                 'function getAmountsOut(uint amountIn, address[] memory path) public view returns (uint[] memory amounts)',
+                'function getPair(address tokenA, address tokenB) external view returns (address pair)'
             ],
             signer
         );
+        // specified token addresses fail with the error because there is no existing Pancakeswap pair contract for the specified address combination.
         // console.log("this is address: ", BUSD)
         const WBNBamountIn = ethers.utils.parseUnits("0.01", "ether");
         const amounts = await routerContract.getAmountsOut(WBNBamountIn, [WBNB, BUSD]);
@@ -64,15 +66,3 @@ db.all(sql, [], (err, rows) => {
   }
   check_price();
 });
-
-// function close_script(){
-//   db.close((err) => {
-//     if (err) {
-//       console.error(err.message);
-//     }
-//     console.log('Close the database connection.');
-//   });
-//   process.exit()
-// }
-
-// setTimeout(close_script, 10000);
