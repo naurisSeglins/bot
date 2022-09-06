@@ -36,6 +36,11 @@ if __name__ == "__main__":
             print("moving some new coins at: ", dateTimeObj)
             move_new_coins()
 
+            # checking if coins have a pair A.K.A if they are in pancakeswap
+            dateTimeObj = datetime.now()
+            print("checking if new coins are on pancake swap at: ", dateTimeObj)
+            os.system('node pancake_swap_pair.js')
+
             print("reseting cycle to 0")
             cycle = 0
             cycleStart = datetime.now()

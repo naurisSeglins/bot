@@ -14,6 +14,9 @@ def move_new_coins():
     # deleting new coins that are not BSC 
     c.execute("DELETE FROM new_coins WHERE address IS NULL OR address = ''")
 
+    
+
+
     # deleting new coins after time when they are not new
     # c.execute("DELETE FROM new_coins WHERE unix_time < :unix_time",{'unix_time': unix_time})
 

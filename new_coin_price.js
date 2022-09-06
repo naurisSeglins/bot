@@ -38,7 +38,6 @@ db.all(sql, [], (err, rows) => {
             router,
             [
                 'function getAmountsOut(uint amountIn, address[] memory path) public view returns (uint[] memory amounts)',
-                'function getPair(address tokenA, address tokenB) external view returns (address pair)'
             ],
             signer
         );
