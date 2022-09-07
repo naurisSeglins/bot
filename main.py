@@ -5,7 +5,7 @@ import os
 from adding_coins_to_db import adding_new_coins_to_db
 from calculation import calculate_wallet
 from calculation import calculate_new_coins
-from new_coins import move_new_coins
+from new_coins import move_new_coins, clean_new_coins
 from my_wallet import updating_wallet
 from sell_coins import decimal_fixing
 
@@ -14,7 +14,7 @@ if __name__ == "__main__":
 
     dateTimeObj = datetime.now()
     print("first time at: ", dateTimeObj)
-    cycle = 1
+    cycle = 7
 
     time.sleep(6)  # imagine you would like to start work in 6 sec first time
     while True:
@@ -33,13 +33,19 @@ if __name__ == "__main__":
             # checking coins and those that are younger than 5 mins copy to new_coins table
             # delete coins that are without address
             dateTimeObj = datetime.now()
-            print("moving some new coins at: ", dateTimeObj)
+            print("moving new coins at: ", dateTimeObj)
             move_new_coins()
 
             # checking if coins have a pair A.K.A if they are in pancakeswap
             dateTimeObj = datetime.now()
             print("checking if new coins are on pancake swap at: ", dateTimeObj)
             os.system('node pancake_swap_pair.js')
+            
+            # delete coins that are without pair
+            dateTimeObj = datetime.now()
+            print("cleaning new coins at: ", dateTimeObj)
+            clean_new_coins()
+
 
             print("reseting cycle to 0")
             cycle = 0

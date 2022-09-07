@@ -14,9 +14,6 @@ def move_new_coins():
     # deleting new coins that are not BSC 
     c.execute("DELETE FROM new_coins WHERE address IS NULL OR address = ''")
 
-    
-
-
     # deleting new coins after time when they are not new
     # c.execute("DELETE FROM new_coins WHERE unix_time < :unix_time",{'unix_time': unix_time})
 
@@ -24,3 +21,13 @@ def move_new_coins():
 
     conn.close()
 
+def clean_new_coins():
+    conn = sqlite3.connect("coins.db")
+
+    c = conn.cursor()
+
+    c.execute("DELETE FROM new_coins WHERE got_pair = ?",("0x0000000000000000000000000000000000000000",))
+
+    conn.commit()
+
+    conn.close()

@@ -8,13 +8,14 @@ let db = new sqlite3.Database('/home/nauris/Documents/GitHub/bot/coins.db', sqli
 });
 
 let sql = `SELECT address coinAddress FROM new_coins`;
-
+let errorCount = 0
 
 db.all(sql, [], (err, rows) => {
 
   let allCoins = rows
 
   async function check_price() {
+
     for (coin of allCoins) {
       try {
 
@@ -55,13 +56,19 @@ db.all(sql, [], (err, rows) => {
         WHERE address = '${coin.coinAddress}'`;
         db.run(sql_price,[]);
       } catch (err) {
-        console.log("this is error: ", err.reason)
-        // nepieciešams skaits cik reizes coinam ir izmests errors !!!!!
-
+        // console.log(coin.coinAddress)
+        // console.log(err)
+        // console.log("this is error: ", err.reason)
+        // error = PancakeLibrary: INSUFFICIENT_LIQUIDITY - liquidity pool is blocked or empty for BNB
+        let errHistory = `INSERT new_coin_errors(address, reason, error) VALUES('${coin.coinAddress}','${err.reason}','${err}')`;
+        db.run(errHistory,[]);
         // continue ir vajadzīgs lai pie errora programma neapstātos, bet turpinātu strādāt tālāk
+
+        errorCount ++
         continue;
       }
     }
+    console.log("new coin checking got:", errorCount, "errors")
   }
   check_price();
 });

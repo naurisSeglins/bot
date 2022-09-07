@@ -8,6 +8,7 @@ let db = new sqlite3.Database('/home/nauris/Documents/GitHub/bot/coins.db', sqli
 });
 
 let sql = `SELECT address coinAddress FROM new_coins`;
+let errorCount = 0
 
 db.all(sql, [], (err, rows) => {
 
@@ -41,18 +42,24 @@ db.all(sql, [], (err, rows) => {
 
         const gotPair = await routerContract.getPair(WBNB, BUSD)
         response = gotPair
-        console.log(response)
+        // console.log(response)
 
         let sql_pair = `UPDATE new_coins
         SET got_pair = '${response}'
         WHERE address = '${coin.coinAddress}'`;
         db.run(sql_pair,[]);
       } catch (err) {
-        console.log(err)
-        console.log("this is error: ", err.reason)
+        // console.log(err)
+        // console.log("this is error: ", err.reason)
+
+        let errHistory = `INSERT pair_coin_errors(address, reason, error) VALUES('${coin.coinAddress}','${err.reason}','${err}')`;
+        db.run(errHistory,[]);
+        
+        errorCount ++
         continue;
       }
     }
+    console.log("new coin checking got:", errorCount, "errors")
   }
   check_pair();
 });

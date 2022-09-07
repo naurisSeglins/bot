@@ -12,6 +12,8 @@ let sql = `SELECT id coinId,
                   address coinAddress
             FROM buy_coins`;
 
+let errorCount = 0
+
 db.all(sql, [], (err, rows) => {
 
   if (err) {
@@ -22,6 +24,7 @@ db.all(sql, [], (err, rows) => {
   async function buy_coin() {    
 
     for (coin of allCoins) {
+      console.log("there is a coin to buy")
       try {
 
         console.log(coin)
@@ -110,17 +113,20 @@ db.all(sql, [], (err, rows) => {
       
       // catch (err) ir nepieciešams, lai zem err tiktu saglabāts error response
       } catch (err) {
-        console.log("this is buy trx error status: ", err.receipt.status)
+        // console.log("this is buy trx error status: ", err.receipt.status)
         let trxHash  = String(err.receipt.transactionHash)
         let trx_status = err.receipt.status
         let sql_bought = `INSERT INTO bought_trx_history(hash, id, address, status) VALUES('${trxHash}','${coin.coinId}','${coin.coinAddress}',${trx_status})`;
         db.run(sql_bought,[]);
-        // nepieciešams skaits cik reizes coinam ir izmests errors !!!!!
 
+        let errHistory = `INSERT buy_coin_errors(address, reason, error) VALUES('${coin.coinAddress}','${err.reason}','${err}')`;
+        db.run(errHistory,[]);
         // continue ir vajadzīgs lai pie errora programma neapstātos, bet turpinātu strādāt tālāk
+        errorCount ++
         continue;
       }
     }
+    console.log("buy coin got:", errorCount, "errors")
   }
   buy_coin();
 

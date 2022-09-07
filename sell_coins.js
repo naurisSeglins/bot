@@ -11,7 +11,8 @@ let sql = `SELECT id coinId,
                   address coinAddress,
                   amount coinAmount,
                   decimal decimal
-            FROM sell_coins`;
+            FROM sell_coins`;  
+let errorCount = 0
 
 db.all(sql, [], (err, rows) => {
 
@@ -19,6 +20,7 @@ db.all(sql, [], (err, rows) => {
   async function sell_coin() {    
 
     for (coin of allCoins) {
+      console.log("there is a coin to sell")
       try {
 
         const ethers = require("ethers");
@@ -110,7 +112,7 @@ db.all(sql, [], (err, rows) => {
 
       // catch (err) ir nepieciešams, lai zem err tiktu saglabāts error response
       } catch (err) {
-        console.log("this is sell trx error status: ", err.receipt.status)
+        // console.log("this is sell trx error status: ", err.receipt.status)
         let trxHash  = String(err.receipt.transactionHash)
         let trx_status = err.receipt.status
         let sql_sell = `INSERT INTO sold_trx_history(hash, id, address, status) VALUES('${trxHash}','${coin.coinId}','${coin.coinAddress}',${trx_status})`;
@@ -119,12 +121,18 @@ db.all(sql, [], (err, rows) => {
         // šeit tiek paņemts errora receipt status kurš ir 0 un pievienots sell_table table
         let sell_coins_table = `UPDATE sell_coins SET status = ${trx_status} WHERE address = '${coin.coinAddress}'`;
         db.run(sell_coins_table,[]);
+
+
+        let errHistory = `INSERT sell_coin_errors(address, reason, error) VALUES('${coin.coinAddress}','${err.reason}','${err}')`;
+        db.run(errHistory,[]);
         // nepieciešams skaits cik reizes coinam ir izmests errors !!!!!
 
+        errorCount ++
         // continue ir vajadzīgs lai pie errora programma neapstātos, bet turpinātu strādāt tālāk
         continue;
       }
     }
+    console.log("sell coin got:", errorCount, "errors")
   }
   sell_coin();
 });

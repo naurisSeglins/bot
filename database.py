@@ -19,8 +19,8 @@ c = conn.cursor()
 # c.execute(sql_query)
 
 
-sql_query = ("ALTER TABLE new_coins ADD got_pair text")
-c.execute(sql_query)
+# sql_query = ("ALTER TABLE new_coins ADD got_pair text")
+# c.execute(sql_query)
 
 
 # sql_query = ("INSERT INTO new_wallet(id, address, unix_time, timestamp, amount, first_price_bnb, bnb_price, percent_bnb, highest_percent_bnb, last_percent_bnb) SELECT id, address, unix_time, timestamp, amount, first_price_bnb, bnb_price, percent_bnb, high_percent_bnb, last_percent_bnb FROM wallet;")
@@ -30,13 +30,12 @@ c.execute(sql_query)
 # sql_query = ("INSERT INTO wallet(id, address, unix_time) SELECT id, address, unix_time FROM buy_coins")
 # c.execute(sql_query)
 
-# c.execute(""" CREATE TABLE bought_trx_history (
-#     hash text,
-#     id text,
-#     address text,
-#     status int,
-#     timestamp DATE DEFAULT (datetime('now','localtime'))
-# ) """)
+c.execute(""" CREATE TABLE pair_coin_errors (
+    address text,
+    reason text,
+    error text,
+    timestamp DATE DEFAULT (datetime('now','localtime'))
+) """)
 
 # c.execute("ALTER TABLE new_coins RENAME COLUMN highest_percent_bnb TO first_percent_bnb")
 
