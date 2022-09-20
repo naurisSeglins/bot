@@ -74,7 +74,7 @@ def calculate_wallet():
 
                 sql_query = ("INSERT OR IGNORE INTO sell_coins(id, address, unix_time, timestamp, amount) SELECT id, address, unix_time, timestamp, amount FROM wallet WHERE address = ?")
                 c.execute(sql_query, (address,))
-                sql_query = ("INSERT INTO sell_calculation_history SELECT * FROM wallet WHERE address = ?")
+                sql_query = ("INSERT OR IGNORE INTO sell_calculation_history SELECT * FROM wallet WHERE address = ?")
                 c.execute(sql_query, (address,))
 
                 unix_time = datetime.timestamp(current_time)
@@ -145,9 +145,9 @@ def calculate_new_coins():
                 print("highest percent bnb = ", row[1])
                 address = str(row[2])
                 # if the price for new coin has gone up then copy this coin to buy_coins table
-                sql_query = ("INSERT INTO buy_coins SELECT id, address, unix_time, timestamp FROM new_coins WHERE address = ?")
+                sql_query = ("INSERT OR IGNORE INTO buy_coins SELECT id, address, unix_time, timestamp FROM new_coins WHERE address = ?")
                 c.execute(sql_query, (address,))
-                sql_query = ("INSERT INTO buy_calculation_history SELECT * FROM new_coins WHERE address = ?")
+                sql_query = ("INSERT OR IGNORE INTO buy_calculation_history SELECT * FROM new_coins WHERE address = ?")
                 c.execute(sql_query, (address,))
 
                 unix_time = datetime.timestamp(current_time)
