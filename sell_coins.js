@@ -26,7 +26,7 @@ db.all(sql, [], (err, rows) => {
         const ethers = require("ethers");
       
         const WBNB = "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c"; 
-        const BUSD = coin.coinAddress;
+        const token = coin.coinAddress;
         
         const router = "0x10ED43C718714eb63d5aA57B78B54704E256024E";
         
@@ -48,14 +48,14 @@ db.all(sql, [], (err, rows) => {
           router,
           [
             'function getAmountsOut(uint amountIn, address[] memory path) public view returns (uint[] memory amounts)',
-            'function swapExactTokensForETHSupportingFeeOnTransferTokens(uint amountIn, uint amountOutMin, address[] calldata path, address to, uint deadline) external returns (uint[] memory amounts)'
+            'function swapExactTokensForETHSupportingFeeOnTransferTokens(uint amountIn, uint amountOutMin, address[] calldata path, address to, uint deadline) external'
           ],
           signer
         );
         // nav skaidrs par šo funkciju vai ir jāmaina WBNB uz coinu adresi vai arī jāatstāj WBNB
         // Mēģināšu samainīt WBNB uz BUSD jo kad funkcija tiek izsaukta kā parametrs tiek likts BUSD
-        const wbnbContract = new ethers.Contract(
-          WBNB,
+        const tokenContract = new ethers.Contract(
+          token,
           [
             'function approve(address spender, uint256 amount) external returns (bool)'
           ],
@@ -63,24 +63,23 @@ db.all(sql, [], (err, rows) => {
         )
 
         console.log("main sell function is called");
-        // šeit ar amount varētu būt problēma!!!!
+
         console.log(coin.coinAddress)
-        // if the coin decimal is 9 then have to multiple by this number = 1000000000
-        // if the coin decimal is 18 then have to multiple by this number = 1000000000000000000
-        let multiplier = 1000000000000000000
-        if (coin.decimal == 9){
-          multiplier = 1000000000
-        }
+        // the issue was with decimal. And other issues as well for instant wrong contract and wrong approve address,
+        // but the way I fixed it was to check the hex number converted to decimal and compare how many numbers there are,
+        // because if there were too many numbers then it was an error,
+        // if there where to less numbers then the amount sold was inccorect.
+        // in the end I don't need multipliers if the decimal value is correct.
 
-        let amount = coin.coinAmount * multiplier
-        const BUSDamountIn = ethers.utils.parseUnits(`${amount}`, coin.decimal);
+        const tokenAmountIn = ethers.utils.parseUnits(`${coin.coinAmount}`, coin.decimal);
 
-        let amounts = await routerContract.getAmountsOut(BUSDamountIn, [BUSD, WBNB]);
+        let amounts = await routerContract.getAmountsOut(tokenAmountIn, [token, WBNB]);
         const WBNBamountOutMin = amounts[1].sub(amounts[1].div(10));
-    
-        const approveTx = await wbnbContract.approve(
+
+
+        const approveTx = await tokenContract.approve(
           router,
-          BUSDamountIn
+          ethers.constants.MaxUint256
         );
         let app_reciept = await approveTx.wait();
         console.log("this is approve receipt status: ", app_reciept.status)
@@ -91,9 +90,9 @@ db.all(sql, [], (err, rows) => {
 
 
         const swapTx = await routerContract.swapExactTokensForETHSupportingFeeOnTransferTokens(
-          BUSDamountIn,
+          tokenAmountIn,
           WBNBamountOutMin,
-          [BUSD, WBNB],
+          [token, WBNB],
           recipient,
           Date.now() + 1000 * 60 * 10,
           {gasLimit: 1000000}
