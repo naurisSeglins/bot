@@ -3,6 +3,26 @@ import sqlite3
 import requests
 import json
 from datetime import datetime
+def cutting(x):
+    # print(x)
+    numbers = 0
+    second_part = ""
+    two_parts = x.split(".")
+    # print(two_parts)
+    for char in two_parts[1]:
+        second_part += char
+        if char != "0":
+            numbers +=1
+        if numbers == 3:
+            break
+        if second_part == "000" and two_parts[0] != "0":
+            break
+    if second_part == "000":
+        result = two_parts[0]
+    else:
+        result = two_parts[0] + "."+ second_part
+    # print(result)
+    return result
 
 def updating_wallet():
     conn = sqlite3.connect("coins.db")
@@ -39,6 +59,8 @@ def updating_wallet():
             print(address["result"])
         
         i = 0
+        # strip unnecessary decimals
+        balance = cutting(str(balance))
         # update how many coins per address I have
         c.execute("UPDATE wallet SET amount = ? WHERE address = ?",(float(balance), str(row[i]),))
 
