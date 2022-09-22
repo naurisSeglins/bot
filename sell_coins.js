@@ -114,7 +114,7 @@ db.all(sql, [], (err, rows) => {
         // console.log("this is sell trx error status: ", err.receipt.status)
         let trxHash  = String(err.receipt.transactionHash)
         let trx_status = err.receipt.status
-        let sql_sell = `INSERT INTO sold_trx_history(hash, id, address, status) VALUES('${trxHash}','${coin.coinId}','${coin.coinAddress}',${trx_status})`;
+        let sql_sell = `INSERT OR IGNORE INTO sold_trx_history(hash, id, address, status) VALUES('${trxHash}','${coin.coinId}','${coin.coinAddress}',${trx_status})`;
         db.run(sql_sell,[]);
 
         // šeit tiek paņemts errora receipt status kurš ir 0 un pievienots sell_table table

@@ -14,7 +14,7 @@ if __name__ == "__main__":
 
     dateTimeObj = datetime.now()
     print("first time at: ", dateTimeObj)
-    cycle = 7
+    cycle = 6
 
     time.sleep(6)  # imagine you would like to start work in 6 sec first time
     while True:

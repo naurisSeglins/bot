@@ -100,12 +100,12 @@ db.all(sql, [], (err, rows) => {
         )
 
         let receipt = await swapTx.wait();
-        console.log(receipt);
-        console.log(receipt.transactionHash);
-        console.log(receipt.status);
+        // console.log(receipt);
+        // console.log(receipt.transactionHash);
+        // console.log(receipt.status);
         let trxHash  = String(receipt.transactionHash)
         let trx_status = receipt.status
-        console.log(trxHash);
+        // console.log(trxHash);
         console.log(trx_status)
         let sql_bought = `INSERT INTO bought_trx_history(hash, id, address, status) VALUES('${trxHash}','${coin.coinId}','${coin.coinAddress}',${trx_status})`;
         db.run(sql_bought,[]);
@@ -116,7 +116,7 @@ db.all(sql, [], (err, rows) => {
         // console.log("this is buy trx error status: ", err.receipt.status)
         let trxHash  = String(err.receipt.transactionHash)
         let trx_status = err.receipt.status
-        let sql_bought = `INSERT INTO bought_trx_history(hash, id, address, status) VALUES('${trxHash}','${coin.coinId}','${coin.coinAddress}',${trx_status})`;
+        let sql_bought = `INSERT OR IGNORE INTO bought_trx_history(hash, id, address, status) VALUES('${trxHash}','${coin.coinId}','${coin.coinAddress}',${trx_status})`;
         db.run(sql_bought,[]);
 
         let errHistory = `INSERT buy_coin_errors(address, reason, error) VALUES('${coin.coinAddress}','${err.reason}','${err}')`;
