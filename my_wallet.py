@@ -86,6 +86,3 @@ def updating_wallet():
     conn.commit()
 
     conn.close()
-
-
-updating_wallet()
