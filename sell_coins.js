@@ -122,7 +122,7 @@ db.all(sql, [], (err, rows) => {
         db.run(sell_coins_table,[]);
 
 
-        let errHistory = `INSERT sell_coin_errors(address, error) VALUES('${coin.coinAddress}','${err}')`;
+        let errHistory = `INSERT INTO sell_coin_errors(address, error) VALUES('${coin.coinAddress}','${err}')`;
         db.run(errHistory,[]);
         // nepieciešams skaits cik reizes coinam ir izmests errors !!!!!
 
