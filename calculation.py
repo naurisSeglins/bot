@@ -79,6 +79,10 @@ def calculate_wallet():
 
                 unix_time = datetime.timestamp(current_time)
                 c.execute("UPDATE sell_coins SET unix_time = ? WHERE address = ?",(unix_time, address,))
+
+                # if the price for wallet coin has gone down then delete this coin from wallet table
+                sql_query = ("DELETE FROM wallet WHERE address= ?")
+                c.execute(sql_query, (address,))
     conn.commit()
 
     conn.close()

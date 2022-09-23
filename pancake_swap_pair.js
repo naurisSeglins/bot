@@ -52,7 +52,7 @@ db.all(sql, [], (err, rows) => {
         // console.log(err)
         // console.log("this is error: ", err.reason)
 
-        let errHistory = `INSERT pair_coin_errors(address, reason, error) VALUES('${coin.coinAddress}','${err.reason}','${err}')`;
+        let errHistory = `INSERT pair_coin_errors(address, error) VALUES('${coin.coinAddress}','${err}')`;
         db.run(errHistory,[]);
         
         errorCount ++

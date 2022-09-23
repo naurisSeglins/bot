@@ -60,7 +60,7 @@ db.all(sql, [], (err, rows) => {
         // console.log(err)
         // console.log("this is error: ", err.reason)
         // error = PancakeLibrary: INSUFFICIENT_LIQUIDITY - liquidity pool is blocked or empty for BNB
-        let errHistory = `INSERT new_coin_errors(address, reason, error) VALUES('${coin.coinAddress}','${err.reason}','${err}')`;
+        let errHistory = `INSERT new_coin_errors(address, error) VALUES('${coin.coinAddress}','${err}')`;
         db.run(errHistory,[]);
         // continue ir vajadzīgs lai pie errora programma neapstātos, bet turpinātu strādāt tālāk
 

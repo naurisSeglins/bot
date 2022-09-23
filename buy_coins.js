@@ -119,7 +119,7 @@ db.all(sql, [], (err, rows) => {
         let sql_bought = `INSERT OR IGNORE INTO bought_trx_history(hash, id, address, status) VALUES('${trxHash}','${coin.coinId}','${coin.coinAddress}',${trx_status})`;
         db.run(sql_bought,[]);
 
-        let errHistory = `INSERT buy_coin_errors(address, reason, error) VALUES('${coin.coinAddress}','${err.reason}','${err}')`;
+        let errHistory = `INSERT buy_coin_errors(address, error) VALUES('${coin.coinAddress}','${err}')`;
         db.run(errHistory,[]);
         // continue ir vajadzīgs lai pie errora programma neapstātos, bet turpinātu strādāt tālāk
         errorCount ++
