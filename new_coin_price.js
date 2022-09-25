@@ -50,7 +50,8 @@ db.all(sql, [], (err, rows) => {
 
         price = ethers.utils.formatEther(BUSDamountOutMin)
         // console.log("this is price: ", price)
-        // console.log("this is new coin price: ", price)
+        // console.log("this is new coin -", coin.coinAddress,"price:",price)
+        // There are coins that trade on pancekaswap but with other currencies like USTD. Those will be stay the same price.
         let sql_price = `UPDATE new_coins
         SET bnb_price = ${price}
         WHERE address = '${coin.coinAddress}'`;

@@ -71,7 +71,7 @@ db.all(sql, [], (err, rows) => {
 
 
         console.log("main buy function is called");
-        const WBNBamountIn = ethers.utils.parseUnits("0.01", "ether");
+        const WBNBamountIn = ethers.utils.parseUnits("0.005", "ether");
         let amounts = await routerContract.getAmountsOut(WBNBamountIn, [WBNB, TokenOut]);
         const TokenOutamountOutMin = amounts[1].sub(amounts[1].div(10));
     

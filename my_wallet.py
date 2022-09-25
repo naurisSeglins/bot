@@ -51,6 +51,8 @@ def updating_wallet():
         i = 0
         # strip unnecessary decimals
         stripedBalance = cutting(str(balance))
+        c.execute("INSERT INTO amount_conversion(id, original, converted) VALUES(?,?,?)", (str(row[i]), float(balance), float(stripedBalance),))
+        
         # update how many coins per address I have
         c.execute("UPDATE wallet SET amount = ? WHERE address = ?",(float(stripedBalance), str(row[i]),))
 

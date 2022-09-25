@@ -28,7 +28,6 @@ db.all(sql, [], (err, rows) => {
         const BUSD = "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c"; 
         const WBNB = coin.coinAddress;
         const router = "0x10ED43C718714eb63d5aA57B78B54704E256024E";
-        console.log(WBNB)
         // const provider = new ethers.providers.WebSocketProvider("wss://speedy-nodes-nyc.moralis.io/UfWmbh10KZGckKrcJzJksBKIR8ftxOuWg0VRbtyy/bsc/mainnet/ws");
         // const provider = new ethers.providers.WebSocketProvider("wss://ws-nd-277-117-011.p2pify.com/1d52263f7bf104663499af684793dfcb");
         const provider = new ethers.providers.JsonRpcProvider("https://bsc.getblock.io/mainnet/?api_key=1086c980-0118-4f0e-85dd-67f7172336dd");
@@ -55,6 +54,7 @@ db.all(sql, [], (err, rows) => {
 
         price = ethers.utils.formatEther(BUSDamountOutMin)
         // console.log("this is wallet coin price: ", price)
+        // console.log(price, coin.coinAddress)
         let sql_price = `UPDATE wallet
         SET bnb_price = ${price}
         WHERE address = '${coin.coinAddress}'`;
@@ -87,4 +87,4 @@ function close_script(){
   process.exit()
 }
 
-setTimeout(close_script, 5000);
+// setTimeout(close_script, 5000);

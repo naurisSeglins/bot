@@ -7,20 +7,20 @@ conn = sqlite3.connect("coins.db")
 
 c = conn.cursor()
 
-# c.execute(""" CREATE TABLE new_wallet (
-#     hash text,
-#     coin_id text,
-#     coin_address text,
-#     status int
-# ) """)
+c.execute(""" CREATE TABLE amount_conversion (
+    id text,
+    original int,
+    converted int,
+    timestamp DATE DEFAULT (datetime('now','localtime'))
+) """)
 
 
 # sql_query = ("ALTER TABLE new_wallet RENAME TO wallet")
 # c.execute(sql_query)
 
 
-sql_query = ("ALTER TABLE buy_calculation_history ADD got_pair text")
-c.execute(sql_query)
+# sql_query = ("ALTER TABLE buy_calculation_history ADD got_pair text")
+# c.execute(sql_query)
 
 
 # sql_query = ("INSERT INTO new_wallet(id, address, unix_time, timestamp, amount, first_price_bnb, bnb_price, percent_bnb, highest_percent_bnb, last_percent_bnb) SELECT id, address, unix_time, timestamp, amount, first_price_bnb, bnb_price, percent_bnb, high_percent_bnb, last_percent_bnb FROM wallet;")
