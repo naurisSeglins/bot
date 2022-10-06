@@ -9,7 +9,8 @@ let db = new sqlite3.Database('/home/bot/Desktop/bot/bot/coins.db', sqlite3.OPEN
 });
 
 let sql = `SELECT id coinId,
-                  address coinAddress
+                  address coinAddress,
+                  error_count dbErrorCount
             FROM buy_coins`;
 
 let errorCount = 0
@@ -118,6 +119,10 @@ db.all(sql, [], (err, rows) => {
         let trx_status = err.receipt.status
         let sql_bought = `INSERT OR IGNORE INTO bought_trx_history(hash, id, address, status) VALUES('${trxHash}','${coin.coinId}','${coin.coinAddress}',${trx_status})`;
         db.run(sql_bought,[]);
+
+        coin.dbErrorCount ++
+        let buy_coins_error_count = `UPDATE buy_coins SET error_count = ${coin.dbErrorCount} WHERE address = '${coin.coinAddress}'`;
+        db.run(buy_coins_error_count,[]);
 
         let errHistory = `INSERT INTO buy_coin_errors(address, error) VALUES('${coin.coinAddress}','${err}')`;
         db.run(errHistory,[]);

@@ -10,7 +10,8 @@ let db = new sqlite3.Database('/home/bot/Desktop/bot/bot/coins.db', sqlite3.OPEN
 let sql = `SELECT id coinId,
                   address coinAddress,
                   amount coinAmount,
-                  decimal decimal
+                  decimal decimal,
+                  error_count dbErrorCount
             FROM sell_coins`;  
 let errorCount = 0
 
@@ -121,6 +122,9 @@ db.all(sql, [], (err, rows) => {
         let sell_coins_table = `UPDATE sell_coins SET status = ${trx_status} WHERE address = '${coin.coinAddress}'`;
         db.run(sell_coins_table,[]);
 
+        coin.dbErrorCount ++
+        let sell_coins_error_count = `UPDATE sell_coins SET error_count = ${coin.dbErrorCount} WHERE address = '${coin.coinAddress}'`;
+        db.run(sell_coins_error_count,[]);
 
         let errHistory = `INSERT INTO sell_coin_errors(address, error) VALUES('${coin.coinAddress}','${err}')`;
         db.run(errHistory,[]);
