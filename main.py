@@ -8,6 +8,7 @@ from calculation import calculate_new_coins
 from new_coins import move_new_coins, clean_new_coins
 from my_wallet import updating_wallet
 from sell_coins import decimal_fixing
+from suspend_coins import suspending_coins
 
 
 if __name__ == "__main__":
@@ -86,7 +87,9 @@ if __name__ == "__main__":
         print("buying new coins at: ", dateTimeObj)
         os.system('node buy_coins.js')
 
-
+        dateTimeObj = datetime.now()
+        print("suspending coins at: ", dateTimeObj)
+        suspending_coins()
 
         cycleEnd = datetime.now()
         cycleTime = cycleEnd - cycleStart

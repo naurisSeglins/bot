@@ -71,11 +71,17 @@ db.all(sql, [], (err, rows) => {
         // because if there were too many numbers then it was an error,
         // if there where to less numbers then the amount sold was inccorect.
         // in the end I don't need multipliers if the decimal value is correct.
-
+        let slippage = 10
+        if (coin.dbErrorCount == 1){
+          slippage = 5
+        }
+        if (coin.dbErrorCount == 2){
+          slippage = 3
+        }
         const tokenAmountIn = ethers.utils.parseUnits(`${coin.coinAmount}`, coin.decimal);
 
         let amounts = await routerContract.getAmountsOut(tokenAmountIn, [token, WBNB]);
-        const WBNBamountOutMin = amounts[1].sub(amounts[1].div(10));
+        const WBNBamountOutMin = amounts[1].sub(amounts[1].div(slippage));
 
 
         const approveTx = await tokenContract.approve(

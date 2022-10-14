@@ -68,13 +68,17 @@ db.all(sql, [], (err, rows) => {
             ],
             signer
         )
-
-
-
+        let slippage = 10
+        if (coin.dbErrorCount == 1){
+          slippage = 5
+        }
+        if (coin.dbErrorCount == 2){
+          slippage = 3
+        }
         console.log("main buy function is called");
         const WBNBamountIn = ethers.utils.parseUnits("0.005", "ether");
         let amounts = await routerContract.getAmountsOut(WBNBamountIn, [WBNB, TokenOut]);
-        const TokenOutamountOutMin = amounts[1].sub(amounts[1].div(10));
+        const TokenOutamountOutMin = amounts[1].sub(amounts[1].div(slippage));
     
         console.log("prices")
         console.log(ethers.utils.formatEther(WBNBamountIn));
