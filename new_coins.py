@@ -7,8 +7,8 @@ def move_new_coins():
     c = conn.cursor()
 
     current_time = datetime.now()
-    # inserting into new_coins table from coins table if coin is within 300 sec young (5mins)
-    unix_time = datetime.timestamp(current_time) - 300
+    # inserting into new_coins table from coins table if coin is within 180 sec young (3mins)
+    unix_time = datetime.timestamp(current_time) - 180
     # adding new coins to the new_coins table
     c.execute("INSERT OR IGNORE INTO new_coins(id, symbol, address, unix_time, timestamp) SELECT id, symbol, address, unix_time, timestamp FROM coins WHERE unix_time > :unix_time",{'unix_time': unix_time})
     # deleting new coins that are not BSC 

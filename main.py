@@ -15,7 +15,7 @@ if __name__ == "__main__":
 
     dateTimeObj = datetime.now()
     print("first time at: ", dateTimeObj)
-    cycle = 6
+    cycle = 4
 
     time.sleep(6)  # imagine you would like to start work in 6 sec first time
     while True:
@@ -24,7 +24,7 @@ if __name__ == "__main__":
         print("starting cycle Nr: ",cycle, " at: ", cycleStart)
 
         # this is coin adding
-        if cycle == 7:
+        if cycle == 5:
 
             # checking all coins from coingecko and adding coins to the db that aren't in db
             # checking address for all coins and adding it to coins that have a bsc address

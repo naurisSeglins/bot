@@ -44,8 +44,10 @@ db.all(sql, [], (err, rows) => {
         );
         // specified token addresses fail with the error because there is no existing Pancakeswap pair contract for the specified address combination.
         // console.log("this is address: ", BUSD)
-        const WBNBamountIn = ethers.utils.parseUnits("0.01", "ether");
-        const amounts = await routerContract.getAmountsOut(WBNBamountIn, [WBNB, BUSD]);
+        // const WBNBamountIn = ethers.utils.parseUnits("0.01", "ether");
+        const WBNBamountIn = ethers.utils.parseUnits("1", 9);
+        // const amounts = await routerContract.getAmountsOut(WBNBamountIn, [WBNB, BUSD]);
+        const amounts = await routerContract.getAmountsOut(WBNBamountIn, [BUSD, WBNB]);
         const BUSDamountOutMin = amounts[1];
 
         price = ethers.utils.formatEther(BUSDamountOutMin)

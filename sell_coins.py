@@ -10,7 +10,7 @@ def decimal_fixing():
 
     c = conn.cursor()
 
-    c.execute("SELECT address, status, decimal FROM sell_coins")
+    c.execute("SELECT address, error_count, decimal FROM sell_coins")
     coin_data = c.fetchall()
 
 
@@ -18,8 +18,9 @@ def decimal_fixing():
     # !!!!!!!!!!!!!!!! if the transaction fails then the structure changes and the status is not update therefore
     # !!!!!!!!!!!!!!!! there is a need for a new way of caching the status of failed transaction.
     for data in coin_data:
-            if not data[1] == None:
-                if data[1] == 0 and data[2] == 18:
+            # if not data[1] == None:
+                # if data[1] == 0 and data[2] == 18:
+                if data[1] == 3:
                     print("setting decimal to 9 to coin: ", data[0])
                     c.execute("UPDATE sell_coins SET decimal = ? WHERE address = ?", (9, data[0]))
 
