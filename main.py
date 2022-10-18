@@ -7,7 +7,7 @@ from calculation import calculate_wallet
 from calculation import calculate_new_coins
 from new_coins import move_new_coins, clean_new_coins
 from my_wallet import updating_wallet
-from sell_coins import decimal_fixing
+from sell_coins import delete_sell_coins
 from suspend_coins import suspending_coins
 
 
@@ -70,8 +70,8 @@ if __name__ == "__main__":
         os.system('node sell_coins.js')
 
         dateTimeObj = datetime.now()
-        print("checking if coins are sold and if needed fixing decimal: ", dateTimeObj)
-        decimal_fixing()
+        print("checking if coins are sold and if needs to be deleted: ", dateTimeObj)
+        delete_sell_coins()
 
 
         # this is coin buying

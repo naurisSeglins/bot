@@ -1,5 +1,8 @@
 import sqlite3
 from datetime import datetime
+import requests
+import json
+
 
 def move_new_coins():
     conn = sqlite3.connect("coins.db")
@@ -19,6 +22,36 @@ def move_new_coins():
 
     conn.commit()
 
+    conn.close()
+
+    # calling decimal function
+    add_decimal()
+
+def add_decimal():
+    conn = sqlite3.connect("coins.db")
+
+    c = conn.cursor() 
+
+    # check how many decimals the coin has
+    c.execute("SELECT id, decimal, address FROM new_coins")
+    allData = c.fetchall()
+
+    for data in allData:
+
+        if data[1] == None:
+            wallet_url = f"https://api.coingecko.com/api/v3/coins/{data[0]}"
+            decimals = requests.get(wallet_url).text
+            decimals = json.loads(decimals)
+            try:
+                decimals = decimals["detail_platforms"].get("binance-smart-chain")
+                coinDecimals = decimals.get("decimal_place")
+            except:
+                print("there was error")
+                print("for this row ", data)
+            
+            c.execute("UPDATE new_coins SET decimal = ? WHERE address = ?",(coinDecimals, str(data[2]),))
+
+    conn.commit()
     conn.close()
 
 def clean_new_coins():

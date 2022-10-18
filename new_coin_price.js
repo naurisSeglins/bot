@@ -7,7 +7,9 @@ let db = new sqlite3.Database('/home/bot/Desktop/bot/bot/coins.db', sqlite3.OPEN
   }
 });
 
-let sql = `SELECT address coinAddress FROM new_coins`;
+let sql = `SELECT address coinAddress,
+                  decimal coinDecimal
+           FROM new_coins`;
 let errorCount = 0
 
 db.all(sql, [], (err, rows) => {
@@ -22,7 +24,7 @@ db.all(sql, [], (err, rows) => {
         const ethers = require("ethers");
         
         const WBNB = "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c"; 
-        const BUSD = coin.coinAddress;
+        const token = coin.coinAddress;
         const router = "0x10ED43C718714eb63d5aA57B78B54704E256024E";
 
         // const provider = new ethers.providers.WebSocketProvider("wss://speedy-nodes-nyc.moralis.io/a38b817304311265560d67b7/bsc/mainnet/ws");
@@ -45,12 +47,12 @@ db.all(sql, [], (err, rows) => {
         // specified token addresses fail with the error because there is no existing Pancakeswap pair contract for the specified address combination.
         // console.log("this is address: ", BUSD)
         // const WBNBamountIn = ethers.utils.parseUnits("0.01", "ether");
-        const WBNBamountIn = ethers.utils.parseUnits("1", 9);
+        const TokenAmountIn = ethers.utils.parseUnits("1", coin.coinDecimal);
         // const amounts = await routerContract.getAmountsOut(WBNBamountIn, [WBNB, BUSD]);
-        const amounts = await routerContract.getAmountsOut(WBNBamountIn, [BUSD, WBNB]);
-        const BUSDamountOutMin = amounts[1];
+        const amounts = await routerContract.getAmountsOut(TokenAmountIn, [token, WBNB]);
+        const WBNBamountOutMin = amounts[1];
 
-        price = ethers.utils.formatEther(BUSDamountOutMin)
+        price = ethers.utils.formatEther(WBNBamountOutMin)
         // console.log("this is price: ", price)
         // console.log("this is new coin -", coin.coinAddress,"price:",price)
         // There are coins that trade on pancekaswap but with other currencies like USTD. Those will be stay the same price.

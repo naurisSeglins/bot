@@ -72,7 +72,7 @@ def calculate_wallet():
                 print("highest percent bnb = ", row[1])
                 address = str(row[2])
 
-                sql_query = ("INSERT OR IGNORE INTO sell_coins(id, address, unix_time, timestamp, amount) SELECT id, address, unix_time, timestamp, amount FROM wallet WHERE address = ?")
+                sql_query = ("INSERT OR IGNORE INTO sell_coins(id, address, unix_time, timestamp, amount, decimal) SELECT id, address, unix_time, timestamp, amount, decimal FROM wallet WHERE address = ?")
                 c.execute(sql_query, (address,))
                 sql_query = ("INSERT OR IGNORE INTO sell_calculation_history SELECT * FROM wallet WHERE address = ?")
                 c.execute(sql_query, (address,))
@@ -149,7 +149,7 @@ def calculate_new_coins():
                 print("highest percent bnb = ", row[1])
                 address = str(row[2])
                 # if the price for new coin has gone up then copy this coin to buy_coins table
-                sql_query = ("INSERT OR IGNORE INTO buy_coins(id, address, unix_time, timestamp) SELECT id, address, unix_time, timestamp FROM new_coins WHERE address = ?")
+                sql_query = ("INSERT OR IGNORE INTO buy_coins(id, address, unix_time, timestamp, decimal) SELECT id, address, unix_time, timestamp, decimal FROM new_coins WHERE address = ?")
                 c.execute(sql_query, (address,))
                 sql_query = ("INSERT OR IGNORE INTO buy_calculation_history SELECT * FROM new_coins WHERE address = ?")
                 c.execute(sql_query, (address,))
@@ -157,7 +157,7 @@ def calculate_new_coins():
                 unix_time = datetime.timestamp(current_time)
                 c.execute("UPDATE buy_coins SET unix_time = ? WHERE address = ?",(unix_time, address,))
                 # if the price for new coin has gone up then copy this coin to wallet table
-                sql_query = ("INSERT INTO wallet(id, address, unix_time, timestamp) SELECT id, address, unix_time, timestamp FROM new_coins WHERE address = ?")
+                sql_query = ("INSERT INTO wallet(id, address, unix_time, timestamp, decimal) SELECT id, address, unix_time, timestamp, decimal FROM new_coins WHERE address = ?")
                 c.execute(sql_query, (address,))
                 # if the price for new coin has gone up then delete this coin from new_coins table
                 sql_query = ("DELETE FROM new_coins WHERE address= ?")

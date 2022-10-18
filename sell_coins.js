@@ -10,8 +10,8 @@ let db = new sqlite3.Database('/home/bot/Desktop/bot/bot/coins.db', sqlite3.OPEN
 let sql = `SELECT id coinId,
                   address coinAddress,
                   amount coinAmount,
-                  decimal decimal,
-                  error_count dbErrorCount
+                  error_count dbErrorCount,
+                  decimal coinDecimal
             FROM sell_coins`;  
 let errorCount = 0
 
@@ -78,7 +78,7 @@ db.all(sql, [], (err, rows) => {
         if (coin.dbErrorCount == 2){
           slippage = 3
         }
-        const tokenAmountIn = ethers.utils.parseUnits(`${coin.coinAmount}`, coin.decimal);
+        const tokenAmountIn = ethers.utils.parseUnits(`${coin.coinAmount}`, coin.coinDecimal);
 
         let amounts = await routerContract.getAmountsOut(tokenAmountIn, [token, WBNB]);
         const WBNBamountOutMin = amounts[1].sub(amounts[1].div(slippage));

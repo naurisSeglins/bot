@@ -9,7 +9,8 @@ let db = new sqlite3.Database('/home/bot/Desktop/bot/bot/coins.db', sqlite3.OPEN
 });
 
 let sql = `SELECT amount coinAmount,
-                  address coinAddress
+                  address coinAddress,
+                  decimal coinDecimal
             FROM wallet WHERE amount != 0`;
 
 let errorCount = 0
@@ -25,8 +26,8 @@ db.all(sql, [], (err, rows) => {
       try{
         const ethers = require("ethers");
         
-        const BUSD = "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c"; 
-        const WBNB = coin.coinAddress;
+        const WBNB = "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c"; 
+        const token = coin.coinAddress;
         const router = "0x10ED43C718714eb63d5aA57B78B54704E256024E";
         // const provider = new ethers.providers.WebSocketProvider("wss://speedy-nodes-nyc.moralis.io/UfWmbh10KZGckKrcJzJksBKIR8ftxOuWg0VRbtyy/bsc/mainnet/ws");
         // const provider = new ethers.providers.WebSocketProvider("wss://ws-nd-277-117-011.p2pify.com/1d52263f7bf104663499af684793dfcb");
@@ -48,11 +49,11 @@ db.all(sql, [], (err, rows) => {
             signer
         );
 
-        const WBNBamountIn = ethers.utils.parseUnits(`${coin.coinAmount}`, "ether");
-        const amounts = await routerContract.getAmountsOut(WBNBamountIn, [WBNB, BUSD]);
-        const BUSDamountOutMin = amounts[1];
+        const TokenAmountIn = ethers.utils.parseUnits(`${coin.coinAmount}`, coin.coinDecimal);
+        const amounts = await routerContract.getAmountsOut(TokenAmountIn, [token, WBNB]);
+        const WBNBamountOutMin = amounts[1];
 
-        price = ethers.utils.formatEther(BUSDamountOutMin)
+        price = ethers.utils.formatEther(WBNBamountOutMin)
         // console.log("this is wallet coin price: ", price)
         // console.log(price, coin.coinAddress)
         let sql_price = `UPDATE wallet
