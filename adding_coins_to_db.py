@@ -15,11 +15,10 @@ def adding_new_coins_to_db():
     # request
     try:
         data = requests.get(url_add).text
-        time.sleep(5)
+        time.sleep(2)
         data = json.loads(data)
     except:
         print("error at first address!")
-    time.sleep(5)
 
 
     # adding coins to the db
@@ -32,24 +31,24 @@ def adding_new_coins_to_db():
             c.execute("INSERT OR IGNORE INTO coins(id, symbol, unix_time) VALUES (?, ?, ?)",
                     (ids["id"], ids["symbol"], unix_time,))   
         except:
-            print(coin_address[0], coin_address[-1])
-            print("error at address update loop")
+            print(ids)
+            print("error at adding coins to the db")
+            print(data)
 
 
     # request
-    try:
-        address = requests.get(url_add).text
-        time.sleep(5)
-        address = json.loads(address)
-    except:
-        print("error at second address!")
-    time.sleep(5)
-
+    # try:
+    #     address = requests.get(url_add).text
+    #     time.sleep(1)
+    #     address = json.loads(address)
+    # except:
+    #     print("error at second address!")
+ 
 
     # adding addreses to the coins
     dateTimeObj = datetime.now()
     print("started address adding at: ", dateTimeObj)
-    for ids in address:
+    for ids in data:
         try:
             coin_address = ids["platforms"].get("binance-smart-chain")
             if coin_address:
@@ -58,8 +57,10 @@ def adding_new_coins_to_db():
                     continue
             c.execute("UPDATE OR IGNORE coins SET address = :address WHERE id = :id", {'address': coin_address,'id': ids["id"]})
         except:
-            print(coin_address[0], coin_address[-1])
+            print(ids)
             print("error at address update loop")
+            print(data)
+
 
 
     conn.commit()

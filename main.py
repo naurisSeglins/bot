@@ -15,7 +15,7 @@ if __name__ == "__main__":
 
     dateTimeObj = datetime.now()
     print("first time at: ", dateTimeObj)
-    cycle = 4
+    cycle = 1
 
     time.sleep(6)  # imagine you would like to start work in 6 sec first time
     while True:
@@ -24,7 +24,7 @@ if __name__ == "__main__":
         print("starting cycle Nr: ",cycle, " at: ", cycleStart)
 
         # this is coin adding
-        if cycle == 5:
+        if cycle == 2:
 
             # checking all coins from coingecko and adding coins to the db that aren't in db
             # checking address for all coins and adding it to coins that have a bsc address
@@ -50,11 +50,11 @@ if __name__ == "__main__":
 
             print("reseting cycle to 0")
             cycle = 0
-            cycleStart = datetime.now()
 
 
         # this is coin selling
-        print("checking wallet how many coins at: ", cycleStart)
+        dateTimeObj = datetime.now()
+        print("checking wallet how many coins at: ", dateTimeObj)
         updating_wallet()
 
         dateTimeObj = datetime.now()
@@ -94,16 +94,25 @@ if __name__ == "__main__":
         cycleEnd = datetime.now()
         cycleTime = cycleEnd - cycleStart
         print("cycle time =", cycleTime)
-
-
-        print("sleeping for 45 seconds at: ", cycleEnd)
-        time.sleep(45)  # do work every 45 seconds
-        dateTimeObj = datetime.now()
-        print("slept for 45 seconds at: ", dateTimeObj)
-
-
+        
         # add 1 to the cycle
         cycle +=1
+
+        if cycle == 2:
+            sleepSecs = 20
+        else:
+            sleepSecs = 25
+
+        sleepTime = sleepSecs - cycleTime.seconds
+
+        if sleepTime < 1:
+            sleepTime = 5
+        print(f"sleeping for {sleepTime} seconds at: ", cycleEnd)
+        time.sleep(sleepTime)  # do work every 30 seconds
+        dateTimeObj = datetime.now()
+        print(f"slept for {sleepTime} seconds at: ", dateTimeObj)
+
+
 
 
         # space between cycles

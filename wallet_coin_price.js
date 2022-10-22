@@ -5,7 +5,6 @@ let db = new sqlite3.Database('/home/bot/Desktop/bot/bot/coins.db', sqlite3.OPEN
   if (err) {
     console.error(err.message);
   }
-  console.log('Connected to the coins database.');
 });
 
 let sql = `SELECT amount coinAmount,

@@ -46,11 +46,9 @@ def updating_wallet():
             print("for this row ", row)
             print(address)
             print(address["result"])
-        print(row)
-        print(row[0])
         # strip unnecessary decimals
         stripedBalance = cutting(str(balance))
-        c.execute("INSERT INTO amount_conversion(id, original, converted) VALUES(?,?,?)", (str(row[0]), float(balance), float(stripedBalance),))
+        c.execute("INSERT OR IGNORE INTO amount_conversion(id, original, converted) VALUES(?,?,?)", (str(row[0]), float(balance), float(stripedBalance),))
         
         # update how many coins per address I have
         c.execute("UPDATE wallet SET amount = ? WHERE address = ?",(float(stripedBalance), str(row[0]),))
@@ -74,6 +72,3 @@ def updating_wallet():
     conn.commit()
 
     conn.close()
-
-
-updating_wallet()

@@ -5,13 +5,11 @@ let db = new sqlite3.Database('/home/bot/Desktop/bot/bot/coins.db', sqlite3.OPEN
   if (err) {
     console.error(err.message);
   }
-  console.log('Connected to the coins database.');
 });
 
 let sql = `SELECT id coinId,
                   address coinAddress,
-                  error_count dbErrorCount,
-                  decimal coinDecimal
+                  error_count dbErrorCount
             FROM buy_coins`;
 
 let errorCount = 0
@@ -76,7 +74,7 @@ db.all(sql, [], (err, rows) => {
           slippage = 3
         }
         console.log("main buy function is called");
-        const WBNBamountIn = ethers.utils.parseUnits("0.005", coin.coinDecimal);
+        const WBNBamountIn = ethers.utils.parseUnits("0.005", "ether");
         let amounts = await routerContract.getAmountsOut(WBNBamountIn, [WBNB, TokenOut]);
         const TokenOutamountOutMin = amounts[1].sub(amounts[1].div(slippage));
     

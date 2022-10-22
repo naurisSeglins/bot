@@ -23,8 +23,8 @@ c = conn.cursor()
 # c.execute(sql_query)
 
 
-# sql_query = ("ALTER TABLE wallet ADD decimal int")
-# c.execute(sql_query)
+sql_query = ("ALTER TABLE buy_calculation_history ADD decimal int")
+c.execute(sql_query)
 
 
 # sql_query = ("INSERT INTO new_wallet(id, address, unix_time, timestamp, amount, first_price_bnb, bnb_price, percent_bnb, highest_percent_bnb, last_percent_bnb) SELECT id, address, unix_time, timestamp, amount, first_price_bnb, bnb_price, percent_bnb, high_percent_bnb, last_percent_bnb FROM wallet;")
