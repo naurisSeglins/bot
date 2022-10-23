@@ -54,7 +54,7 @@ def updating_wallet():
         c.execute("UPDATE wallet SET amount = ? WHERE address = ?",(float(stripedBalance), str(row[0]),))
 
     
-    # if there is amount for coin in wallet then delete this coin from wallet
+    # if there is amount for coin in wallet then delete this coin from buy coins
     c.execute("SELECT address, amount FROM wallet")
     rows = c.fetchall()
     
