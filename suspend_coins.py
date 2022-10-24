@@ -10,8 +10,8 @@ def suspending_coins():
     coin_data = c.fetchall()
 
     for data in coin_data:
-            if data[1] == 3:
-                c.execute("INSERT INTO suspended_coins(id, address, error_count) SELECT id, address, error_count FROM sell_coins WHERE address > :address",{'address': data[0]})
+        if data[1] >= 3:
+            c.execute("INSERT INTO suspended_coins(id, address, error_count) SELECT id, address, error_count FROM sell_coins WHERE address = :address",{'address': data[0]})
 
     conn.commit()
 
@@ -19,8 +19,8 @@ def suspending_coins():
     coin_data = c.fetchall()
 
     for data in coin_data:
-            if data[1] == 3:
-                c.execute("INSERT INTO suspended_coins(id, address, error_count) SELECT id, address, error_count FROM buy_coins WHERE address > :address",{'address': data[0]})
+        if data[1] >= 3:
+            c.execute("INSERT INTO suspended_coins(id, address, error_count) SELECT id, address, error_count FROM buy_coins WHERE address = :address",{'address': data[0]})
 
     conn.commit()
 
@@ -34,3 +34,6 @@ def suspending_coins():
     conn.commit()
 
     conn.close()
+
+
+suspending_coins()

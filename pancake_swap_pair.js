@@ -7,7 +7,7 @@ let db = new sqlite3.Database('/home/bot/Desktop/bot/bot/coins.db', sqlite3.OPEN
   }
 });
 
-let sql = `SELECT address coinAddress FROM new_coins`;
+let sql = `SELECT address coinAddress FROM new_coins WHERE got_pair is NULL`;
 let errorCount = 0
 
 db.all(sql, [], (err, rows) => {

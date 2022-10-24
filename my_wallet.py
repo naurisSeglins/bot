@@ -30,7 +30,7 @@ def updating_wallet():
     c = conn.cursor() 
 
     # check how many coins per address I have
-    c.execute("SELECT address FROM wallet")
+    c.execute("SELECT address, decimal FROM wallet")
     rows = c.fetchall()
 
     for row in rows:
@@ -39,7 +39,7 @@ def updating_wallet():
         address = requests.get(wallet_url.format(*row, sep='')).text
         address = json.loads(address)
         try:
-            balance = Decimal(address["result"]) / (10**18)
+            balance = Decimal(address["result"]) / (10**row[1])
 
         except:
             print("there was error")

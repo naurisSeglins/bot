@@ -67,14 +67,17 @@ db.all(sql, [], (err, rows) => {
             signer
         )
         let slippage = 10
+        let gasLimit = 1000000
         if (coin.dbErrorCount == 1){
           slippage = 5
+          gasLimit = 1500000
         }
         if (coin.dbErrorCount == 2){
           slippage = 3
+          gasLimit = 2000000
         }
         console.log("main buy function is called");
-        const WBNBamountIn = ethers.utils.parseUnits("0.005", "ether");
+        const WBNBamountIn = ethers.utils.parseUnits("0.02", "ether");
         let amounts = await routerContract.getAmountsOut(WBNBamountIn, [WBNB, TokenOut]);
         const TokenOutamountOutMin = amounts[1].sub(amounts[1].div(slippage));
     
@@ -99,7 +102,7 @@ db.all(sql, [], (err, rows) => {
           [WBNB, TokenOut],
           recipient,
           Date.now() + 1000 * 60 * 10,
-          {gasLimit: 1000000}
+          {gasLimit: gasLimit}
         )
 
         let receipt = await swapTx.wait();

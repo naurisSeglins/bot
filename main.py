@@ -105,7 +105,7 @@ if __name__ == "__main__":
 
         sleepTime = sleepSecs - cycleTime.seconds
 
-        if sleepTime < 1:
+        if sleepTime < 5:
             sleepTime = 5
         print(f"sleeping for {sleepTime} seconds at: ", cycleEnd)
         time.sleep(sleepTime)  # do work every 30 seconds

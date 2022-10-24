@@ -72,11 +72,14 @@ db.all(sql, [], (err, rows) => {
         // if there where to less numbers then the amount sold was inccorect.
         // in the end I don't need multipliers if the decimal value is correct.
         let slippage = 10
+        let gasLimit = 1000000
         if (coin.dbErrorCount == 1){
           slippage = 5
+          gasLimit = 1500000
         }
         if (coin.dbErrorCount == 2){
           slippage = 3
+          gasLimit = 2000000
         }
         const tokenAmountIn = ethers.utils.parseUnits(`${coin.coinAmount}`, coin.coinDecimal);
 
@@ -102,7 +105,7 @@ db.all(sql, [], (err, rows) => {
           [token, WBNB],
           recipient,
           Date.now() + 1000 * 60 * 10,
-          {gasLimit: 1000000}
+          {gasLimit: gasLimit}
         )
 
         let receipt = await swapTx.wait();
