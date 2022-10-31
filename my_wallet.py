@@ -34,13 +34,16 @@ def updating_wallet():
     rows = c.fetchall()
 
     for row in rows:
-        wallet_url = "https://api.bscscan.com/api?module=account&action=tokenbalance&contractaddress={}&address=0xAeCb376d7484f29143c626a7Aa29C0CD7Ae39e59&tag=latest&apikey=TU1KAW3FWN3QG3EJBM23DZ5HF3CB8SEF5Z"
+        # wallet_url = "https://api.bscscan.com/api?module=account&action=tokenbalance&contractaddress={}&address=0xAeCb376d7484f29143c626a7Aa29C0CD7Ae39e59&tag=latest&apikey=TU1KAW3FWN3QG3EJBM23DZ5HF3CB8SEF5Z"
         
-        address = requests.get(wallet_url.format(*row, sep='')).text
+        # address = requests.get(wallet_url.format(*row, sep='')).text
+        wallet_url = f"https://api.bscscan.com/api?module=account&action=tokenbalance&contractaddress={row[0]}&address=0xAeCb376d7484f29143c626a7Aa29C0CD7Ae39e59&tag=latest&apikey=TU1KAW3FWN3QG3EJBM23DZ5HF3CB8SEF5Z"
+        
+        address = requests.get(wallet_url).text
         address = json.loads(address)
         try:
             balance = Decimal(address["result"]) / (10**row[1])
-
+            
         except:
             print("there was error")
             print("for this row ", row)
@@ -72,3 +75,4 @@ def updating_wallet():
     conn.commit()
 
     conn.close()
+updating_wallet()

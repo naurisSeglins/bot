@@ -67,7 +67,8 @@ def calculate_wallet():
 
     for row in rows:
         if row[0]:
-            if row[1] - row[0] >= 10:
+            # checking if wallet coin price has gone down for 15%
+            if row[1] - row[0] >= 15:
                 print("percent bnb = ",row[0])
                 print("highest percent bnb = ", row[1])
                 address = str(row[2])
@@ -143,8 +144,8 @@ def calculate_new_coins():
 
     for row in rows:
         if row[0]:
-            # checking if new coin price has gone up for 5%
-            if row[0] - row[1] >= 5:
+            # checking if new coin price has gone up for 10%
+            if row[0] - row[1] >= 10:
                 print("percent bnb = ",row[0])
                 print("highest percent bnb = ", row[1])
                 address = str(row[2])
