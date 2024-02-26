@@ -64,19 +64,3 @@ def clean_new_coins():
     conn.commit()
 
     conn.close()
-
-
-
-# Traceback (most recent call last):
-#   File "/home/bot/Desktop/bot/bot/main.py", line 38, in <module>
-#     move_new_coins()
-#   File "/home/bot/Desktop/bot/bot/new_coins.py", line 28, in move_new_coins
-#     add_decimal()
-#   File "/home/bot/Desktop/bot/bot/new_coins.py", line 44, in add_decimal
-#     decimals = json.loads(decimals)
-#   File "/usr/lib/python3.9/json/__init__.py", line 346, in loads
-#     return _default_decoder.decode(s)
-#   File "/usr/lib/python3.9/json/decoder.py", line 337, in decode
-#     obj, end = self.raw_decode(s, idx=_w(s, 0).end())
-#   File "/usr/lib/python3.9/json/decoder.py", line 355, in raw_decode
-#     raise JSONDecodeError("Expecting value", s, err.value) from None

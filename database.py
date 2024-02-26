@@ -2,9 +2,6 @@ import sqlite3
 
 conn = sqlite3.connect("coins.db")
 
-# conn = sqlite3.connect("new_coins.db")
-
-
 c = conn.cursor()
 
 c.execute(""" CREATE TABLE amount_conversion (

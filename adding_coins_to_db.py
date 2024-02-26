@@ -33,17 +33,7 @@ def adding_new_coins_to_db():
         except:
             print(ids)
             print("error at adding coins to the db")
-            print(data)
-
-
-    # request
-    # try:
-    #     address = requests.get(url_add).text
-    #     time.sleep(1)
-    #     address = json.loads(address)
-    # except:
-    #     print("error at second address!")
- 
+            print(data) 
 
     # adding addreses to the coins
     dateTimeObj = datetime.now()

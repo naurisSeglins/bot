@@ -36,15 +36,12 @@ db.all(sql, [], (err, rows) => {
         
         const router = "0x10ED43C718714eb63d5aA57B78B54704E256024E";
         
-        const recipient = "0xAeCb376d7484f29143c626a7Aa29C0CD7Ae39e59";
+        const recipient = "";
         
-        const provider = new ethers.providers.JsonRpcProvider("https://bsc.getblock.io/mainnet/?api_key=1086c980-0118-4f0e-85dd-67f7172336dd");
-        // const provider = new ethers.providers.WebSocketProvider('wss://ws-nd-277-117-011.p2pify.com/1d52263f7bf104663499af684793dfcb', 56);
-
+        const provider = new ethers.providers.JsonRpcProvider("https://bsc.getblock.io/mainnet/?api_key=");
         
-        const mnemonic = "exercise dumb famous kingdom auto sweet celery position mad angry pioneer record";
+        const mnemonic = "";
         
-        // const wallet = new ethers.Wallet(privatekey);
         const wallet = new ethers.Wallet.fromMnemonic(mnemonic);
         
         const signer = wallet.connect(provider);
@@ -90,7 +87,6 @@ db.all(sql, [], (err, rows) => {
             WBNBamountIn
         );
         let app_reciept = await approveTx.wait();
-        // console.log(app_reciept);
         let appHash  = String(app_reciept.transactionHash)
         let app_status = app_reciept.status
         let sql_approve = `INSERT INTO bought_trx_approve(hash, status) VALUES('${appHash}', ${app_status})`;
@@ -106,12 +102,8 @@ db.all(sql, [], (err, rows) => {
         )
 
         let receipt = await swapTx.wait();
-        // console.log(receipt);
-        // console.log(receipt.transactionHash);
-        // console.log(receipt.status);
         let trxHash  = String(receipt.transactionHash)
         let trx_status = receipt.status
-        // console.log(trxHash);
         console.log(trx_status)
         let sql_bought = `INSERT INTO bought_trx_history(hash, id, address, status) VALUES('${trxHash}','${coin.coinId}','${coin.coinAddress}',${trx_status})`;
         db.run(sql_bought,[]);
@@ -119,7 +111,6 @@ db.all(sql, [], (err, rows) => {
       
       // catch (err) ir nepieciešams, lai zem err tiktu saglabāts error response
       } catch (err) {
-        // console.log("this is buy trx error status: ", err.receipt.status)
         let trxHash  = String(err.receipt.transactionHash)
         let trx_status = err.receipt.status
         let sql_bought = `INSERT OR IGNORE INTO bought_trx_history(hash, id, address, status) VALUES('${trxHash}','${coin.coinId}','${coin.coinAddress}',${trx_status})`;

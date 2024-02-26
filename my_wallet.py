@@ -4,7 +4,6 @@ import requests
 import json
 from datetime import datetime
 def cutting(x):
-    # print(x)
     numbers = 0
     second_part = ""
     two_parts = x.split(".")
@@ -21,7 +20,6 @@ def cutting(x):
         result = two_parts[0]
     else:
         result = two_parts[0] + "."+ second_part
-    # print(result)
     return result
 
 def updating_wallet():
@@ -34,10 +32,7 @@ def updating_wallet():
     rows = c.fetchall()
 
     for row in rows:
-        # wallet_url = "https://api.bscscan.com/api?module=account&action=tokenbalance&contractaddress={}&address=0xAeCb376d7484f29143c626a7Aa29C0CD7Ae39e59&tag=latest&apikey=TU1KAW3FWN3QG3EJBM23DZ5HF3CB8SEF5Z"
-        
-        # address = requests.get(wallet_url.format(*row, sep='')).text
-        wallet_url = f"https://api.bscscan.com/api?module=account&action=tokenbalance&contractaddress={row[0]}&address=0xAeCb376d7484f29143c626a7Aa29C0CD7Ae39e59&tag=latest&apikey=TU1KAW3FWN3QG3EJBM23DZ5HF3CB8SEF5Z"
+        wallet_url = f"https://api.bscscan.com/api?module=account&action=tokenbalance&contractaddress={row[0]}&address=&tag=latest&apikey="
         
         address = requests.get(wallet_url).text
         address = json.loads(address)
@@ -75,4 +70,3 @@ def updating_wallet():
     conn.commit()
 
     conn.close()
-updating_wallet()

@@ -27,11 +27,9 @@ db.all(sql, [], (err, rows) => {
         const token = coin.coinAddress;
         const router = "0x10ED43C718714eb63d5aA57B78B54704E256024E";
 
-        // const provider = new ethers.providers.WebSocketProvider("wss://speedy-nodes-nyc.moralis.io/a38b817304311265560d67b7/bsc/mainnet/ws");
-        const provider = new ethers.providers.JsonRpcProvider("https://bsc.getblock.io/mainnet/?api_key=1086c980-0118-4f0e-85dd-67f7172336dd");
-        // const provider = new ethers.providers.WebSocketProvider("wss://ws-nd-277-117-011.p2pify.com/1d52263f7bf104663499af684793dfcb");
+        const provider = new ethers.providers.JsonRpcProvider("https://bsc.getblock.io/mainnet/?api_key=");
         
-        const mnemonic = "exercise dumb famous kingdom auto sweet celery position mad angry pioneer record";
+        const mnemonic = "";
         
         const wallet = new ethers.Wallet.fromMnemonic(mnemonic);
         
@@ -45,26 +43,16 @@ db.all(sql, [], (err, rows) => {
             signer
         );
         // specified token addresses fail with the error because there is no existing Pancakeswap pair contract for the specified address combination.
-        // console.log("this is address: ", BUSD)
-        // const WBNBamountIn = ethers.utils.parseUnits("0.01", "ether");
         const TokenAmountIn = ethers.utils.parseUnits("1", coin.coinDecimal);
-        // const amounts = await routerContract.getAmountsOut(WBNBamountIn, [WBNB, BUSD]);
         const amounts = await routerContract.getAmountsOut(TokenAmountIn, [token, WBNB]);
         const WBNBamountOutMin = amounts[1];
 
         price = ethers.utils.formatEther(WBNBamountOutMin)
-        // console.log("this is price: ", price)
-        // console.log("this is new coin -", coin.coinAddress,"price:",price)
-        // There are coins that trade on pancekaswap but with other currencies like USTD. Those will be stay the same price.
         let sql_price = `UPDATE new_coins
         SET bnb_price = ${price}
         WHERE address = '${coin.coinAddress}'`;
         db.run(sql_price,[]);
       } catch (err) {
-        // console.log(coin.coinAddress)
-        // console.log(err)
-        // console.log("this is error: ", err.reason)
-        // error = PancakeLibrary: INSUFFICIENT_LIQUIDITY - liquidity pool is blocked or empty for BNB
         let errHistory = `INSERT INTO new_coin_errors(address, error) VALUES('${coin.coinAddress}','${err}')`;
         db.run(errHistory,[]);
         // continue ir vajadzīgs lai pie errora programma neapstātos, bet turpinātu strādāt tālāk

@@ -24,9 +24,9 @@ db.all(sql, [], (err, rows) => {
         const BUSD = coin.coinAddress;
         const router = "0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73";
 
-        const provider = new ethers.providers.JsonRpcProvider("https://bsc.getblock.io/mainnet/?api_key=1086c980-0118-4f0e-85dd-67f7172336dd");
+        const provider = new ethers.providers.JsonRpcProvider("https://bsc.getblock.io/mainnet/?api_key=");
         
-        const mnemonic = "exercise dumb famous kingdom auto sweet celery position mad angry pioneer record";
+        const mnemonic = "";
         
         const wallet = new ethers.Wallet.fromMnemonic(mnemonic);
         
@@ -42,15 +42,12 @@ db.all(sql, [], (err, rows) => {
 
         const gotPair = await routerContract.getPair(WBNB, BUSD)
         response = gotPair
-        // console.log(response)
 
         let sql_pair = `UPDATE new_coins
         SET got_pair = '${response}'
         WHERE address = '${coin.coinAddress}'`;
         db.run(sql_pair,[]);
       } catch (err) {
-        // console.log(err)
-        // console.log("this is error: ", err.reason)
 
         let errHistory = `INSERT INTO pair_coin_errors(address, error) VALUES('${coin.coinAddress}','${err}')`;
         db.run(errHistory,[]);

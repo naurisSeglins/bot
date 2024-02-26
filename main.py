@@ -9,7 +9,7 @@ from new_coins import move_new_coins, clean_new_coins
 from my_wallet import updating_wallet
 from sell_coins import delete_sell_coins
 from suspend_coins import suspending_coins
-
+from strategy_calculation import short_strategy_calc
 
 if __name__ == "__main__":
 
@@ -47,49 +47,71 @@ if __name__ == "__main__":
             print("cleaning new coins at: ", dateTimeObj)
             clean_new_coins()
 
-
             print("reseting cycle to 0")
             cycle = 0
 
+        # Until I figure out strategy this is commented
 
-        # this is coin selling
-        dateTimeObj = datetime.now()
-        print("checking wallet how many coins at: ", dateTimeObj)
-        updating_wallet()
+        # # this is coin selling
+        # dateTimeObj = datetime.now()
+        # print("checking wallet how many coins at: ", dateTimeObj)
+        # updating_wallet()
 
-        dateTimeObj = datetime.now()
-        print("checking prices in wallet at: ", dateTimeObj)
-        os.system('node wallet_coin_price.js')
+        # dateTimeObj = datetime.now()
+        # print("checking prices in wallet at: ", dateTimeObj)
+        # os.system('node wallet_coin_price.js')
 
-        dateTimeObj = datetime.now()
-        print("calculating coins at: ", dateTimeObj)
-        calculate_wallet()
+        # dateTimeObj = datetime.now()
+        # print("calculating coins at: ", dateTimeObj)
+        # calculate_wallet()
 
-        dateTimeObj = datetime.now()
-        print("selling coins at: ", dateTimeObj)
-        os.system('node sell_coins.js')
+        # dateTimeObj = datetime.now()
+        # print("selling coins at: ", dateTimeObj)
+        # os.system('node sell_coins.js')
 
-        dateTimeObj = datetime.now()
-        print("checking if coins are sold and if needs to be deleted: ", dateTimeObj)
-        delete_sell_coins()
+        # dateTimeObj = datetime.now()
+        # print("checking if coins are sold and if needs to be deleted: ", dateTimeObj)
+        # delete_sell_coins()
 
 
-        # this is coin buying
+        #!!!!!!!!!!!!!!!!!!! Here will be all new coin checking script !!!!!!!!!!!!!!!!!!!!!!!!!
         dateTimeObj = datetime.now()
         print("checking prices for new coins at: ", dateTimeObj)
         os.system('node new_coin_price.js')
 
+        # I need to run the new_coin script but I commented out the strategy script in calculate_new_coins
         dateTimeObj = datetime.now()
         print("calculating coins at: ", dateTimeObj)
         calculate_new_coins()
 
-        dateTimeObj = datetime.now()
-        print("buying new coins at: ", dateTimeObj)
-        os.system('node buy_coins.js')
+        # Here will be strategy calculation script
 
         dateTimeObj = datetime.now()
-        print("suspending coins at: ", dateTimeObj)
-        suspending_coins()
+        print("short coin calculation at: ", dateTimeObj)
+        short_strategy_calc()
+
+
+
+
+
+        # Until I figure out strategy this is commented
+
+        # # this is coin buying
+        # dateTimeObj = datetime.now()
+        # print("checking prices for new coins at: ", dateTimeObj)
+        # os.system('node new_coin_price.js')
+
+        # dateTimeObj = datetime.now()
+        # print("calculating coins at: ", dateTimeObj)
+        # calculate_new_coins()
+
+        # dateTimeObj = datetime.now()
+        # print("buying new coins at: ", dateTimeObj)
+        # os.system('node buy_coins.js')
+
+        # dateTimeObj = datetime.now()
+        # print("suspending coins at: ", dateTimeObj)
+        # suspending_coins()
 
         cycleEnd = datetime.now()
         cycleTime = cycleEnd - cycleStart

@@ -31,16 +31,12 @@ db.all(sql, [], (err, rows) => {
         
         const router = "0x10ED43C718714eb63d5aA57B78B54704E256024E";
         
-        const recipient = "0xAeCb376d7484f29143c626a7Aa29C0CD7Ae39e59";
+        const recipient = "";
         
-        // const provider = new ethers.providers.WebSocketProvider("wss://bsc-ws-node.nariox.org:443");
-        const provider = new ethers.providers.JsonRpcProvider("https://bsc.getblock.io/mainnet/?api_key=1086c980-0118-4f0e-85dd-67f7172336dd");
-        // const provider = new ethers.providers.WebSocketProvider("wss://ws-nd-277-117-011.p2pify.com/1d52263f7bf104663499af684793dfcb");
-
+        const provider = new ethers.providers.JsonRpcProvider("https://bsc.getblock.io/mainnet/?api_key=");
         
-        const mnemonic = "exercise dumb famous kingdom auto sweet celery position mad angry pioneer record";
+        const mnemonic = "";
         
-        // const wallet = new ethers.Wallet(privatekey);
         const wallet = new ethers.Wallet.fromMnemonic(mnemonic);
         
         const signer = wallet.connect(provider);
@@ -121,7 +117,6 @@ db.all(sql, [], (err, rows) => {
 
       // catch (err) ir nepieciešams, lai zem err tiktu saglabāts error response
       } catch (err) {
-        // console.log("this is sell trx error status: ", err.receipt.status)
         let trxHash  = String(err.receipt.transactionHash)
         let trx_status = err.receipt.status
         let sql_sell = `INSERT OR IGNORE INTO sold_trx_history(hash, id, address, status) VALUES('${trxHash}','${coin.coinId}','${coin.coinAddress}',${trx_status})`;
